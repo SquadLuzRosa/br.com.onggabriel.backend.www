@@ -45,3 +45,5 @@ celerybeat-schedule
 celerybeat.pid
 docs/_build/
 .ipynb_checkpoints
+flake8_output.txt
+test_output.txt
