@@ -21,6 +21,8 @@ services:
 
   web_api:
     build: .
+    env_file:
+      - .env
     command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
@@ -33,7 +35,9 @@ services:
 
   celery_worker:
     build: .
-    command: celery -A core worker -l info
+    env_file:
+      - .env
+    command: celery -A app worker -l info
     restart: always
     volumes:
       - .:/app
@@ -43,7 +47,9 @@ services:
   
   celery_beat:
     build: .
-    command: celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    command: celery -A app beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
     restart: always
     volumes:
       - .:/app
