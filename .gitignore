@@ -1,0 +1,47 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/ 
+postgres_data/
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+
+# Ambientes Virtuais
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Configuração de Ferramentas
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+htmlcov/
+.tox/
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+
+# IDEs
+.idea/
+.vscode/
+
+# Outros
+celerybeat-schedule
+celerybeat.pid
+docs/_build/
+.ipynb_checkpoints
