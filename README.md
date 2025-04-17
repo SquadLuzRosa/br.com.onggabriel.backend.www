@@ -104,13 +104,6 @@ Essa combinação de tecnologias foi escolhida para garantir eficiência, escala
         <i>BackEnd</i>
       </td>
     </tr>
-    <tr>
-      <td align="center">
-        <img src="https://avatars.githubusercontent.com/u/96319650?v=4" width="100" ><br>
-        <a href="https://github.com/rafaelrgsenhorinho" ><b>Rafael Senhorinho</b></a><br>
-        <i>FrontEnd</i>
-      </td>
-    </tr>
   </table>
 </div>
 
