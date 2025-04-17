@@ -111,18 +111,6 @@ Essa combinação de tecnologias foi escolhida para garantir eficiência, escala
         <i>FrontEnd</i>
       </td>
     </tr>
-    <tr>
-      <td align="center">
-        <img src="https://avatars.githubusercontent.com/u/56051094?v=4" width="100" ><br>
-        <a href="https://github.com/TiagoMata" ><b>Tiago Mata</b></a><br>
-        <i>QA</i>
-      </td>
-      <td align="center">
-        <img src="https://avatars.githubusercontent.com/u/142944584?v=4" width="100" ><br>
-        <a href="https://github.com/Nathalia-Michelon" ><b>Nathalia-Michelon</b></a><br>
-        <i>QA</i>
-      </td>
-    </tr>
   </table>
 </div>
 
