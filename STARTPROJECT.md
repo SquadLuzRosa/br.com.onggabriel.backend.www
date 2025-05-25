@@ -40,6 +40,7 @@ cd br.com.onggabriel.backend.www
 ```
 
 ### 2. Criar o arquivo .env
+
 No projeto existe um arquivo .env.example que contém as variavéis de configuração, você pode renomear .env.example para .env:
 
 ```bash
@@ -62,11 +63,13 @@ DEBUG=True
 ```
 
 ### 3. Subir os Containers com Docker Compose
+
 No diretório raiz do projeto, execute:
 
 ```bash
 docker-compose up --build
 ```
+
 Esse comando irá:
 Criar e iniciar os containers: Django, PostgreSQL e RabbitMQ e instalar as dependências automaticamente.
 
@@ -77,7 +80,9 @@ docker ps
 ```
 
 ### 4. Acessar a Aplicação no Navegador
+
 Após a inicialização, acesse:
+
 ```bash
 API Principal: http://localhost:8000
 
@@ -86,7 +91,9 @@ Admin Django: http://localhost:8000/admin
 ```
 
 ### 5. Acessar o Painel do RabbitMQ
+
 Gerencie filas e mensagens em:
+
 ```bash
 http://localhost:15672
 
@@ -97,6 +104,7 @@ Senha: mypassword
 ```
 
 ### 6. Acessar a Documentação da API
+
 Acesse a documentação interativa nos links abaixo:
 
 ```bash
@@ -108,7 +116,7 @@ Schema JSON: http://localhost:8000/api/v1/schema/
 ```
 
 7. Rotas de Autenticação
-Você pode usar as rotas abaixo para lidar com autenticação JWT:
+   Você pode usar as rotas abaixo para lidar com autenticação JWT:
 
 ```bash
 Obter Token: POST http://localhost:8000/api/v1/auth/token/
@@ -119,14 +127,17 @@ Verificar Token: POST http://localhost:8000/api/v1/auth/token/verify/
 ```
 
 ### 🛠️ Problemas Comuns
+
 #### Docker travado?
 
 Reinicie o Docker Desktop.
+
 ```bash
 Execute docker system prune -a com cuidado (isso remove containers e imagens antigas).
 ```
 
 #### Porta em uso?
+
 ```bash
 Verifique se as portas 8000, 5432 e 15672 estão livres.
 ```
@@ -134,4 +145,3 @@ Verifique se as portas 8000, 5432 e 15672 estão livres.
 #### Erro de banco não encontrado?
 
 Verifique se POSTGRES_HOST=data_base no .env bate com o nome do serviço no docker-compose.yml.
-

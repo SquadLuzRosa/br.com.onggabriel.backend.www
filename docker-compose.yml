@@ -9,42 +9,65 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.13-management
     ports:
       - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}"
       - "${RABBITMQ_AMQP_PORT}:${RABBITMQ_AMQP_PORT}"
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   web_api:
     build: .
     env_file:
       - .env
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+           if [ \"$DJANGO_ENV\" = 'production' ]; then
+             python manage.py collectstatic --noinput &&
+             gunicorn myproject.wsgi:application --bind 0.0.0.0:${DJANGO_PORT};
+           else
+             python manage.py runserver 0.0.0.0:${DJANGO_PORT} --noreload;
+           fi"
     restart: always
     volumes:
       - .:/app
     ports:
       - "${DJANGO_PORT}:${DJANGO_PORT}"
     depends_on:
-      - data_base
-      - rabbitmq
+      data_base:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   celery_worker:
     build: .
     env_file:
       - .env
-    command: celery -A app worker -l info
+    command: celery -A app worker -l INFO
     restart: always
     volumes:
       - .:/app
     depends_on:
-      - data_base
-      - rabbitmq
-  
+      data_base:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
   celery_beat:
     build: .
     env_file:
@@ -54,8 +77,11 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - data_base
-      - rabbitmq
+      data_base:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
 volumes:
   postgres_data:
+  rabbitmq-data:
