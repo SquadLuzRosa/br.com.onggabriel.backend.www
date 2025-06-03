@@ -5,6 +5,8 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView
 )
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -13,5 +15,7 @@ urlpatterns = [
     path('api/v1/redoc/', SpectacularRedocView.as_view(), name='redoc'),
 
     path('api/v1/', include('authentication.urls')),
+    path('api/v1/', include('customuser.urls')),
+    path('api/v1/', include('blog.urls')),
     path('admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
