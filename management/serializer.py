@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import (
     HomeSection,
     MediaSection,
-    AboutSection,
     MissionSection,
     AgendaSection,
     DonationSection,
@@ -19,12 +18,6 @@ class HomeSectionSerializer(serializers.ModelSerializer):
 class MediaSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MediaSection
-        fields = '__all__'
-
-
-class AboutSectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AboutSection
         fields = '__all__'
 
 

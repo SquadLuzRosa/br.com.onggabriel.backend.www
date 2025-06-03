@@ -2,7 +2,6 @@ from rest_framework import viewsets
 from .serializer import (
     HomeSectionSerializer,
     MediaSectionSerializer,
-    AboutSectionSerializer,
     MissionSectionSerializer,
     AgendaSectionSerializer,
     DonationSectionSerializer,
@@ -11,7 +10,6 @@ from .serializer import (
 from .models import (
     HomeSection,
     MediaSection,
-    AboutSection,
     MissionSection,
     AgendaSection,
     DonationSection,
@@ -27,11 +25,6 @@ class HomeSectionViewSet(viewsets.ModelViewSet):
 class MediaSectionViewSet(viewsets.ModelViewSet):
     queryset = MediaSection.objects.all()
     serializer_class = MediaSectionSerializer
-
-
-class AboutSectionViewSet(viewsets.ModelViewSet):
-    queryset = AboutSection.objects.all()
-    serializer_class = AboutSectionSerializer
 
 
 class MissionSectionViewSet(viewsets.ModelViewSet):
