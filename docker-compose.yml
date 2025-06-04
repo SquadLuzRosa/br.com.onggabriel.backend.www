@@ -36,16 +36,17 @@ services:
     env_file:
       - .env
     command: >
-      sh -c "sleep 5 && python manage.py migrate --noinput &&
+      sh -c "sleep 5 && python manage.py makemigrations || true &&
+           python manage.py migrate --noinput &&
            if [ \"$DJANGO_ENV\" = 'production' ]; then
              python manage.py collectstatic --noinput &&
              gunicorn myproject.wsgi:application --bind 0.0.0.0:${DJANGO_PORT};
            else
-             python manage.py runserver 0.0.0.0:${DJANGO_PORT} --noreload;
+             python manage.py runserver 0.0.0.0:${DJANGO_PORT};
            fi"
     restart: always
     volumes:
-      - .:/app
+      - .:/br.com.onggabriel.backend.www
     ports:
       - "${DJANGO_PORT}:${DJANGO_PORT}"
     depends_on:
