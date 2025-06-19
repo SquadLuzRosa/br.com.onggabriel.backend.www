@@ -4,7 +4,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -41,11 +41,11 @@ services:
              python manage.py collectstatic --noinput &&
              gunicorn myproject.wsgi:application --bind 0.0.0.0:${DJANGO_PORT};
            else
-             python manage.py runserver 0.0.0.0:${DJANGO_PORT} --noreload;
+             python manage.py runserver 0.0.0.0:${DJANGO_PORT};
            fi"
     restart: always
     volumes:
-      - .:/app
+      - .:/br.com.onggabriel.backend.www
     ports:
       - "${DJANGO_PORT}:${DJANGO_PORT}"
     depends_on:
