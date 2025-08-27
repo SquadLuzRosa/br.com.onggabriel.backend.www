@@ -64,7 +64,7 @@ class Post(models.Model):
         related_name='posts',
         verbose_name='Categorias'
     )
-    tags = models.ManyToManyField('Tag', related_name='author')
+    tags = models.ManyToManyField('Tag', related_name='posts')
 
     class Meta:
         verbose_name = 'Post'
