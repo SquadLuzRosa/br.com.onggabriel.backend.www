@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'blog',
     'testimonial',
     'management',
+    'events',
 ]
 
 MIDDLEWARE = [
@@ -76,20 +77,25 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3'
+DJANGO_ENV = os.getenv('DJANGo_ENV')
+if DJANGO_ENV == 'development':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3'
+        }
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': os.getenv('POSTGRES_DB'),
-    #     'USER': os.getenv('POSTGRES_USER'),
-    #     'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-    #     'HOST': os.getenv("POSTGRES_HOST", "localhost" if os.getenv("GITHUB_ACTIONS") else "data_base"),
-    #     'PORT': os.getenv("POSTGRES_PORT", "5432"),
-    # }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv("POSTGRES_HOST", "localhost" if os.getenv("GITHUB_ACTIONS") else "data_base"),
+            'PORT': os.getenv("POSTGRES_PORT", "5432"),
+        }
+    }
 
 # CUSTOM USER
 AUTH_USER_MODEL = 'customuser.CustomUser'
@@ -100,8 +106,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissions',
+        'authentication.permissions.PublicReadAndCSRFCheckPermission',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS': ['dj_rql.drf.RQLFilterBackend'],
