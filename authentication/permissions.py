@@ -2,9 +2,9 @@ from rest_framework.permissions import BasePermission
 from rest_framework.exceptions import PermissionDenied
 
 
-class CSRFCheckPermission(BasePermission):
+class PublicReadAndCSRFCheckPermission(BasePermission):
     def has_permission(self, request, view):
-        if request.method in ('GET', 'HEAD', 'OPTION'):
+        if request.method in ('GET', 'HEAD', 'OPTIONS'):
             return True
 
         csrf_token_cookie = request.COOKIES.get('XSRF-TOKEN')
