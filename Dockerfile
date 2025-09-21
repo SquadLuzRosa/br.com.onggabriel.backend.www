@@ -1,4 +1,4 @@
-FROM python:3.12-slim AS builder
+FROM python:3.12-slim-bookworm AS builder
 
 WORKDIR /br.com.onggabriel.backend.www
 
@@ -12,7 +12,7 @@ RUN pip install --upgrade pip && \
 pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
 
 
-FROM python:3-12-slim
+FROM python:3-12-slim-bookworm
 
 WORKDIR /br.com.onggabriel.backend.www
 
