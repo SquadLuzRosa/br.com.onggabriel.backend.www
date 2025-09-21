@@ -19,7 +19,18 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     f"http://localhost:{os.getenv('WEBAPP_PORT')}",
 ]
-
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-csrf-token',
+]
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -40,6 +51,7 @@ INSTALLED_APPS = [
     'blog',
     'testimonial',
     'management',
+    'events',
 ]
 
 MIDDLEWARE = [
@@ -47,10 +59,10 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.CustomCSRFMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -76,16 +88,25 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv("POSTGRES_HOST", "localhost" if os.getenv("GITHUB_ACTIONS") else "data_base"),
-        'PORT': os.getenv("POSTGRES_PORT", "5432"),
+DJANGO_ENV = os.getenv('DJANGO_ENV')
+if DJANGO_ENV == 'development':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3'
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv("POSTGRES_HOST", "localhost" if os.getenv("GITHUB_ACTIONS") else "data_base"),
+            'PORT': os.getenv("POSTGRES_PORT", "5432"),
+        }
+    }
 
 # CUSTOM USER
 AUTH_USER_MODEL = 'customuser.CustomUser'
@@ -96,8 +117,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissions',
+        'authentication.permissions.PublicReadAndCSRFCheckPermission',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS': ['dj_rql.drf.RQLFilterBackend'],

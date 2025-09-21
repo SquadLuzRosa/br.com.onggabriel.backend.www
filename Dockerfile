@@ -1,18 +1,32 @@
-FROM python:3.12-slim
+FROM python:3.12-slim AS builder
+
+WORKDIR /br.com.onggabriel.backend.www
+
+RUN apt-get update && \
+apt-get install -y --no-install-recommends gcc && \
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --upgrade pip && \
+pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+
+
+FROM python:3-12-slim
 
 WORKDIR /br.com.onggabriel.backend.www
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN addgroup --system django && adduser --system --ingroup django django
 
-COPY requirements.txt /br.com.onggabriel.backend.www/
+COPY --from=builder /wheels /wheels
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install --no-cache /wheels/*
 
-COPY . /br.com.onggabriel.backend.www/
+COPY . .
+
+RUN chown -R django:django /br.com.onggabriel.backend.www
+
+USER django
