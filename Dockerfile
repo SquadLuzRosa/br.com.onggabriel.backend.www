@@ -12,7 +12,7 @@ RUN pip install --upgrade pip && \
 pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
 
 
-FROM python:3-12-slim-bookworm
+FROM python:3.12-slim-bookworm
 
 WORKDIR /br.com.onggabriel.backend.www
 
