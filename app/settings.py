@@ -19,7 +19,18 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     f"http://localhost:{os.getenv('WEBAPP_PORT')}",
 ]
-
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-csrf-token',
+]
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -77,7 +88,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DJANGO_ENV = os.getenv('DJANGo_ENV')
+DJANGO_ENV = os.getenv('DJANGO_ENV')
 if DJANGO_ENV == 'development':
     DATABASES = {
         'default': {
