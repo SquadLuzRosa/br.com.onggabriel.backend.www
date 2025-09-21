@@ -10,6 +10,7 @@ class Events(models.Model):
     address = models.CharField(max_length=100, verbose_name='Endereço')
     description = models.CharField(max_length=300, verbose_name='Descrição Curta')
     content = models.TextField(blank=True, null=True, verbose_name='Conteúdo do Evento')
+    image = models.ImageField(upload_to='covers/', blank=True, null=True, verbose_name='imagem do evento')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
