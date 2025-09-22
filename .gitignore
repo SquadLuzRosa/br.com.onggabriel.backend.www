@@ -9,6 +9,7 @@ db.sqlite3-journal
 media/
 staticfiles/ 
 postgres_data/
+entrypoint.sh
 
 # Python
 *.py[cod]
