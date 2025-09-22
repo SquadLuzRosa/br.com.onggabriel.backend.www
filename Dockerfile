@@ -1,29 +1,34 @@
-# 1. Começamos com uma imagem base do Python.
-FROM python:3.12-slim-bookworm
+FROM python:3.12-slim-bookworm AS builder
 
-# 2. Define o diretório de trabalho dentro do contêiner.
 WORKDIR /app
 
-# 3. Variáveis de ambiente para o Python, recomendadas pelo Django.
+COPY requirements.txt .
+
+RUN pip install --upgrade pip && \
+    pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+
+# --- ESTÁGIO 2: Final (A Sala de Estar) ---
+# Começamos com um novo ambiente limpo para a imagem final.
+FROM python:3.12-slim-bookworm
+
+WORKDIR /app
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# 4. Copia apenas o arquivo de dependências primeiro.
-#    Isso otimiza o cache do Docker para builds futuros.
-COPY requirements.txt .
+# Copia os pacotes pré-compilados do estágio builder.
+COPY --from=builder /wheels /wheels
 
-# 5. Instala as dependências do projeto.
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Instala os pacotes.
+RUN pip install --no-cache /wheels/*
 
-# 6. Copia todo o resto do código do seu projeto para dentro do contêiner.
+# Copia o código-fonte da aplicação.
 COPY . .
 
-# 7. Informa ao Docker que a aplicação dentro deste contêiner usará a porta 8000.
+# Expõe a porta que a aplicação vai usar.
 EXPOSE 8000
 
-# 8. Define o comando padrão para iniciar a aplicação.
-#    ATENÇÃO: Altere "app.wsgi:application" se a pasta do seu projeto Django
-#    que contém o arquivo wsgi.py tiver um nome diferente.
+# Define o comando padrão para iniciar a aplicação.
 CMD ["gunicorn", "app.wsgi:application", "--bind", "0.0.0.0:8000"]
+    
 
