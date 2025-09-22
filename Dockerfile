@@ -30,3 +30,11 @@ COPY . .
 RUN chown -R django:django /br.com.onggabriel.backend.www
 
 USER django
+
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 8000
+
+ENTRYPOINT [ "/entrypoint.sh" ]
