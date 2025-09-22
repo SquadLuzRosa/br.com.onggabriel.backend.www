@@ -10,7 +10,7 @@ media/
 staticfiles/ 
 postgres_data/
 entrypoint.sh
-
+check_code.sh
 # Python
 *.py[cod]
 *$py.class
