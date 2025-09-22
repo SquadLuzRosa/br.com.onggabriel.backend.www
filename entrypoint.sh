@@ -12,3 +12,5 @@ else
     echo "Iniciando Gunicorn (Processo Web)..."
     gunicorn app.wsgi:application --bind 0.0.0.0:8000
 fi
+
+# força atualização do git
