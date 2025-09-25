@@ -16,4 +16,6 @@ class EventsSerializer(serializers.ModelSerializer):
             'description',
             'content',
             'image',
+            'link',
+            'event_end_time',
         ]
