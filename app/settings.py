@@ -3,6 +3,8 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 load_dotenv()
+import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -98,14 +100,9 @@ if DJANGO_ENV == 'development':
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.getenv('POSTGRES_DB'),
-            'USER': os.getenv('POSTGRES_USER'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-            'HOST': os.getenv("POSTGRES_HOST", "localhost" if os.getenv("GITHUB_ACTIONS") else "data_base"),
-            'PORT': os.getenv("POSTGRES_PORT", "5432"),
-        }
+        'default': dj_database_url.config(
+            conn_max_age=600
+        )
     }
 
 # CUSTOM USER
