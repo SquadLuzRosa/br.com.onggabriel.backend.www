@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # CORS ALLOWED
 CORS_ALLOW_CREDENTIALS = True
