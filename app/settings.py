@@ -11,9 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
-DEBUG = os.getenv('DEBUG')
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # CORS ALLOWED
 CORS_ALLOW_CREDENTIALS = True
@@ -100,9 +100,7 @@ if DJANGO_ENV == 'development':
     }
 else:
     DATABASES = {
-        'default': dj_database_url.config(
-            conn_max_age=600
-        )
+        'default': dj_database_url.config(conn_max_age=600)
     }
 
 # CUSTOM USER
