@@ -186,9 +186,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CELERY CONFIG
 
-CELERY_BROKER_URL = f"pyamqp://{os.getenv('RABBITMQ_DEFAULT_USER')}:{os.getenv('RABBITMQ_DEFAULT_PASS')}@rabbitmq:{os.getenv('RABBITMQ_AMQP_PORT', 5672)}//"
-CELERY_TIMEZONE = 'America/Sao_Paulo'
-CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_BROKER_URL = f"pyamqp://{os.getenv('RABBITMQ_DEFAULT_USER')}:{os.getenv('RABBITMQ_DEFAULT_PASS')}@rabbitmq:{os.getenv('RABBITMQ_AMQP_PORT', 5672)}//"
+# CELERY_TIMEZONE = 'America/Sao_Paulo'
+# CELERY_RESULT_BACKEND = 'django-db'
 
 # JAZZMIN CONFIG
 
