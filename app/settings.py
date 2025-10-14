@@ -110,7 +110,7 @@ AUTH_USER_MODEL = 'customuser.CustomUser'
 # REST FRAMEWORK CONFIG
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'authentication.custom_jwt_cookie_auth.CustomJWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'authentication.permissions.PublicReadAndCSRFCheckPermission',
