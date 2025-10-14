@@ -1,9 +1,10 @@
-from pathlib import Path
-from datetime import timedelta
-from dotenv import load_dotenv
 import os
-load_dotenv()
+from datetime import timedelta
+from pathlib import Path
+from dotenv import load_dotenv
 import dj_database_url
+
+load_dotenv()
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,17 +12,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = ['*']
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+ALLOWED_HOSTS = [
+    'api.onggabriel.com.br',
+    'localhost',
+    '127.0.0.1',
+]
+
 # CORS ALLOWED
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    f"http://localhost:{os.getenv('WEBAPP_PORT')}",
+    os.getenv('FRONTEND_URL'),
+    'https://onggabriel.com.br'
 ]
+
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -33,6 +39,7 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
     'x-csrf-token',
+    'x-xsrf-token',
 ]
 
 INSTALLED_APPS = [
@@ -59,8 +66,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -120,10 +127,9 @@ REST_FRAMEWORK = {
 }
 
 # JWT CONFIGURATION
-
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
 # SPECTACULAR CONFIG

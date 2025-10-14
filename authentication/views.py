@@ -54,10 +54,16 @@ class CookieTokenRefreshView(TokenRefreshView):
 
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get('refresh')
+        csrf_token_cookie = request.COOKIES.get('XSRF-TOKEN')
+        csrf_token_header = request.headers.get('X-XSRF-TOKEN')
 
+        if not csrf_token_cookie or not csrf_token_header or csrf_token_cookie != csrf_token_header:
+            return Response({
+                'detail': 'CSRF Token Validation Faield'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         if not refresh_token:
-            return Response({'detail': 'Refresh Token Missing'}, status=status.HTTP_401_UNAUTHORIZED)
-
+            return Response({'detail': 'Refresh Token Missin'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             refresh = RefreshToken(refresh_token)
             access_token = str(refresh.access_token)
@@ -70,6 +76,14 @@ class CookieTokenRefreshView(TokenRefreshView):
                 secure=True,
                 samesite='None',
                 max_age=60 * 5,
+            )
+            new_csrf_token = secrets.token_urlsafe(32)
+            response.set_cookie(
+                key='XSRF-TOKEN',
+                value=new_csrf_token,
+                httponly=False,
+                secure=True,
+                samesite='None',
             )
             return response
         except Exception:
