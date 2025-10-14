@@ -24,8 +24,8 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             key='access',
             value=access_token,
             httponly=True,
-            secure=False,
-            samesite='none',
+            secure=True,
+            samesite='None',
             max_age=60 * 5,
         )
 
@@ -33,8 +33,8 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             key='refresh',
             value=refresh_token,
             httponly=True,
-            secure=False,
-            samesite='none',
+            secure=True,
+            samesite='None',
             max_age=60 * 60 * 24 * 7,
         )
 
@@ -42,8 +42,8 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             key='XSRF-TOKEN',
             value=csrf_token,
             httponly=False,
-            secure=False,
-            samesite='none',
+            secure=True,
+            samesite='None',
         )
 
         response.data = {'detail': 'Login Efetuado Com Sucesso'}
@@ -67,8 +67,8 @@ class CookieTokenRefreshView(TokenRefreshView):
                 key='access',
                 value=access_token,
                 httponly=True,
-                secure=False,
-                samesite='none',
+                secure=True,
+                samesite='None',
                 max_age=60 * 5,
             )
             return response
