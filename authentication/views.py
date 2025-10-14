@@ -27,14 +27,11 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         if not access_token or not refresh_token:
             return Response({'detail': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         csrf_token = secrets.token_urlsafe(32)
-
-        is_secure = not settings.DEBUG
-
         response.set_cookie(
             key='access',
             value=access_token,
             httponly=True,
-            secure=is_secure,
+            secure=False,
             samesite=get_samesite(),
             max_age=60 * 5,
         )
@@ -43,7 +40,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             key='refresh',
             value=refresh_token,
             httponly=True,
-            secure=is_secure,
+            secure=False,
             samesite=get_samesite(),
             max_age=60 * 60 * 24 * 7,
         )
@@ -52,7 +49,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             key='XSRF-TOKEN',
             value=csrf_token,
             httponly=False,
-            secure=is_secure,
+            secure=False,
             samesite=get_samesite(),
         )
 
@@ -73,13 +70,11 @@ class CookieTokenRefreshView(TokenRefreshView):
             access_token = str(refresh.access_token)
 
             response = Response({'detail': 'Token Refreshed'}, status=status.HTTP_200_OK)
-
-            is_secure = not settings.DEBUG
             response.set_cookie(
                 key='access',
                 value=access_token,
                 httponly=True,
-                secure=is_secure,
+                secure=False,
                 samesite=get_samesite(),
                 max_age=60 * 5,
             )
