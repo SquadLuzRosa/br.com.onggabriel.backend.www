@@ -8,13 +8,6 @@ from rest_framework.views import APIView
 import secrets
 
 
-def get_samesite():
-    if settings.DEBUG:
-        return "lax"
-    else:
-        return "none"
-
-
 class CookieTokenObtainPairView(TokenObtainPairView):
     permission_classes = [AllowAny]
 
@@ -32,7 +25,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             value=access_token,
             httponly=True,
             secure=False,
-            samesite=get_samesite(),
+            samesite='none',
             max_age=60 * 5,
         )
 
@@ -41,7 +34,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             value=refresh_token,
             httponly=True,
             secure=False,
-            samesite=get_samesite(),
+            samesite='none',
             max_age=60 * 60 * 24 * 7,
         )
 
@@ -50,7 +43,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             value=csrf_token,
             httponly=False,
             secure=False,
-            samesite=get_samesite(),
+            samesite='none',
         )
 
         response.data = {'detail': 'Login Efetuado Com Sucesso'}
@@ -75,7 +68,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 value=access_token,
                 httponly=True,
                 secure=False,
-                samesite=get_samesite(),
+                samesite='none',
                 max_age=60 * 5,
             )
             return response
