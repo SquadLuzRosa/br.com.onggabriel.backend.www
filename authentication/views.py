@@ -49,7 +49,10 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             path='/'
         )
 
-        response.data = {'detail': 'Login Efetuado Com Sucesso'}
+        response.data = {
+            'detail': 'Login Efetuado Com Sucesso',
+            'xsrfToken': csrf_token
+        }
         return response
 
 
@@ -62,7 +65,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
         if not csrf_token_cookie or not csrf_token_header or csrf_token_cookie != csrf_token_header:
             return Response({
-                'detail': 'CSRF Token Validation Faield'}, 
+                'detail': 'CSRF Token Validation Faield'},
                 status=status.HTTP_401_UNAUTHORIZED
             )
         if not refresh_token:
