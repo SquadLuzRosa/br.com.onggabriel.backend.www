@@ -27,6 +27,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             secure=True,
             samesite='None',
             max_age=60 * 5,
+            path='/'
         )
 
         response.set_cookie(
@@ -36,6 +37,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             secure=True,
             samesite='None',
             max_age=60 * 60 * 24 * 7,
+            path='/'
         )
 
         response.set_cookie(
@@ -44,6 +46,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             httponly=False,
             secure=True,
             samesite='None',
+            path='/'
         )
 
         response.data = {'detail': 'Login Efetuado Com Sucesso'}
@@ -76,6 +79,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 secure=True,
                 samesite='None',
                 max_age=60 * 5,
+                path='/'
             )
             new_csrf_token = secrets.token_urlsafe(32)
             response.set_cookie(
@@ -84,6 +88,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 httponly=False,
                 secure=True,
                 samesite='None',
+                path='/'
             )
             return response
         except Exception:
