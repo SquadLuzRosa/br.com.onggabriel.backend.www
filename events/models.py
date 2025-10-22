@@ -13,6 +13,7 @@ class Events(models.Model):
     description = models.CharField(max_length=300, verbose_name='Descrição Curta')
     content = models.TextField(blank=True, null=True, verbose_name='Conteúdo do Evento')
     image = models.ImageField(upload_to='covers/', blank=True, null=True, verbose_name='imagem do evento')
+    is_participation = models.BooleanField(verbose_name='é obrigatório participação?', default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

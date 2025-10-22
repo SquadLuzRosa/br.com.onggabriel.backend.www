@@ -18,4 +18,5 @@ class EventsSerializer(serializers.ModelSerializer):
             'image',
             'link',
             'event_end_time',
+            'is_participation',
         ]
