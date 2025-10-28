@@ -39,23 +39,34 @@ class PostSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     media_post = MediaSerializer(many=True, read_only=True)
 
+    category_ids = serializers.PrimaryKeyRelatedField(
+        queryset=CategoryType.objects.all(),
+        source='categories',
+        many=True,
+        write_only=True
+    )
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(),
+        source='tags',
+        many=True,
+        write_only=True
+    )
+
     class Meta:
         model = Post
         fields = [
             'id',
             'title',
-            'slug',
-            'summary',
             'content',
-            'status',
             'author',
             'creation_date',
-            'publication_date',
             'update_date',
             'cover_image',
             'categories',
             'tags',
             'media_post'
+            'tag_ids',
+            'category_ids',
         ]
 
 

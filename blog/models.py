@@ -8,7 +8,6 @@ import hashlib
 class CategoryType(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
     title = models.CharField(max_length=255, verbose_name='Título')
-    slug = models.SlugField(unique=True, verbose_name='Identificador da URL')
     description = models.TextField(blank=True, null=True, verbose_name='Descrição')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
@@ -23,9 +22,8 @@ class CategoryType(models.Model):
 
 
 class Tag(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, verbose_name='ID')
     title = models.CharField(max_length=255, verbose_name='Título')
-    slug = models.SlugField(unique=True, verbose_name='Identificador da URL')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
@@ -39,25 +37,19 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4, unique=True, editable=False, verbose_name='ID')
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, verbose_name='ID')
     title = models.CharField(max_length=255, verbose_name='Título')
-    slug = models.SlugField(unique=True, verbose_name='Identificador da URL')
-    summary = models.TextField(blank=True, null=True)
     content = models.TextField(verbose_name='Conteudo')
-    status = models.CharField(
-        max_length=50,
-        choices=[
-            ('rascunho', 'Rascunho'),
-            ('publicado', 'Publicado'),
-            ('arquivado', 'Arquivado')
-        ]
+    author = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='user_author',
+        verbose_name='Autor'
     )
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_author', verbose_name='Autor')
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
-    publication_date = models.DateTimeField(null=True, blank=True, verbose_name='Data de publicação')
     update_date = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
     cover_image = models.ImageField(upload_to='covers/', blank=True, null=True, verbose_name='Imagem da capa')
-    meta_keywords = models.CharField(max_length=255, blank=True, null=True, verbose_name='Palavras chaves')
     meta_description = models.CharField(max_length=255, verbose_name='Meta descrição')
     categories = models.ManyToManyField(
         CategoryType,
@@ -69,7 +61,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
-        ordering = ['title', 'status']
+        ordering = ['-creation_date', 'title']
 
     def __str__(self):
         return self.title.upper()
@@ -78,10 +70,9 @@ class Post(models.Model):
 class EngagementMetrics(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, unique=True, editable=False, verbose_name='ID')
     post = models.ForeignKey(Post, related_name='post_metrics', on_delete=models.CASCADE, verbose_name='ID do post')
-    views = models.IntegerField(blank=True, null=True, verbose_name='Visualizações')
-    shares = models.IntegerField(blank=True, null=True, verbose_name='Compartilhamento')
-    comments = models.IntegerField(blank=True, null=True, verbose_name='Comentários')
-    last_update = models.DateTimeField(auto_now=True, verbose_name='Ultima atualização')
+    views = models.IntegerField(default=0, verbose_name='Visualizações')
+    shares = models.IntegerField(default=0, verbose_name='Compartilhamento')
+    comments = models.IntegerField(default=0, verbose_name='Comentários')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
@@ -91,7 +82,7 @@ class EngagementMetrics(models.Model):
         ordering = ['views', 'shares', 'comments']
 
     def __str__(self):
-        return f'Metrica - {self.post.id}'
+        return f'Métricas - {self.post.title}'
 
 
 def upload_media(instance, filename):
