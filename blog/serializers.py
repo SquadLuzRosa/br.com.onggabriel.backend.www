@@ -64,7 +64,7 @@ class PostSerializer(serializers.ModelSerializer):
             'cover_image',
             'categories',
             'tags',
-            'media_post'
+            'media_post',
             'tag_ids',
             'category_ids',
         ]
