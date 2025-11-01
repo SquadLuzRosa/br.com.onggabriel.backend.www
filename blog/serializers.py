@@ -18,7 +18,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 class CategoryTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryType
-        fields = ['id', 'title', 'slug', 'description']
+        fields = ['id', 'title', 'description']
+        read_only_fields = ['id']
 
 
 class TagSerializer(serializers.ModelSerializer):
