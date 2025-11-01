@@ -36,18 +36,11 @@ class MediaSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     categories = CategoryTypeSerializer(many=True, read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
     media_post = MediaSerializer(many=True, read_only=True)
 
     category_ids = serializers.PrimaryKeyRelatedField(
         queryset=CategoryType.objects.all(),
         source='categories',
-        many=True,
-        write_only=True
-    )
-    tag_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Tag.objects.all(),
-        source='tags',
         many=True,
         write_only=True
     )

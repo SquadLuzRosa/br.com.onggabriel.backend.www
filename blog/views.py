@@ -24,7 +24,7 @@ from .filters import (
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.select_related('author').prefetch_related('categories', 'tags', 'media_post')
+    queryset = Post.objects.select_related('author').prefetch_related('categories', 'media_post')
     serializer_class = PostSerializer
     rql_filter_class = PostFilterClass
     permission_classes = [IsAuthenticatedOrReadOnly]

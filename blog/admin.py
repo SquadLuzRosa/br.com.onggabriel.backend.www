@@ -20,8 +20,8 @@ class TagAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', )
     search_fields = ('title', 'content', )
-    list_filter = ('categories', 'tags', )
-    filter_horizontal = ('categories', 'tags', )
+    list_filter = ('categories', )
+    filter_horizontal = ('categories', )
     ordering = ('title', 'author', )
 
 
