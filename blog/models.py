@@ -56,6 +56,7 @@ class Post(models.Model):
         related_name='posts',
         verbose_name='Categorias'
     )
+
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
