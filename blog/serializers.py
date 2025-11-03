@@ -56,9 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
             'update_date',
             'cover_image',
             'categories',
-            'tags',
             'media_post',
-            'tag_ids',
             'category_ids',
         ]
 
