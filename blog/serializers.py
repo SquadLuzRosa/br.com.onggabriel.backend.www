@@ -25,7 +25,7 @@ class CategoryTypeSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['id', 'title', 'slug']
+        fields = ['id', 'title']
 
 
 class MediaSerializer(serializers.ModelSerializer):
