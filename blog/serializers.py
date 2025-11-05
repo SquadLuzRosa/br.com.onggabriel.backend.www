@@ -65,7 +65,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         request = self.context.get('request')
-        author = request.user if request else None
+        author = request.author if request else None
 
         if author and Post.objects.filter(author=author, title=attrs.get('title')).exists():
             raise serializers.ValidationError({
