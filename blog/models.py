@@ -48,7 +48,7 @@ class Post(models.Model):
         related_name='user_author',
         verbose_name='Autor'
     )
-    slug = models.SlugField(max_length=300, unique=True, editable=False)
+    slug = models.SlugField(max_length=300, unique=True, editable=False, default=False)
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     update_date = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
     cover_image = models.ImageField(upload_to='covers/', blank=True, null=True, verbose_name='Imagem da capa')
