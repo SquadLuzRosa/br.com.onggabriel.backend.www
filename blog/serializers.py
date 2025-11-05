@@ -50,6 +50,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             'id',
+            'slug',
             'title',
             'content',
             'author',
@@ -60,6 +61,18 @@ class PostSerializer(serializers.ModelSerializer):
             'media_post',
             'category_ids',
         ]
+        read_only_fields = ['slug', 'creation_date', 'update_date', 'author']
+
+    def validate(self, attrs):
+        request = self.context.get('request')
+        author = request.user if request else None
+
+        if author and Post.objects.filter(author=author, title=attrs.get('title')).exists():
+            raise serializers.ValidationError({
+                'errors': 'Você já possui um post com este título.'
+            })
+
+        return attrs
 
 
 class EngagementMetricsSerializer(serializers.ModelSerializer):

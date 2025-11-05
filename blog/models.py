@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from uuid import uuid4
 from customuser.models import CustomUser
 import os
@@ -47,6 +48,7 @@ class Post(models.Model):
         related_name='user_author',
         verbose_name='Autor'
     )
+    slug = models.SlugField(max_length=300, unique=True, editable=False)
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     update_date = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
     cover_image = models.ImageField(upload_to='covers/', blank=True, null=True, verbose_name='Imagem da capa')
@@ -61,6 +63,12 @@ class Post(models.Model):
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
         ordering = ['-creation_date', 'title']
+        unique_together = ('author', 'title')
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.author:
+            self.slug = f"{slugify(self.author.username)}/{slugify(self.title)}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title.upper()
