@@ -1,7 +1,0 @@
-venv
-db.sqlite3
-postgres_data/
-.gitattributes
-.gitignore
-check_code.sh
-entrypoint.sh
