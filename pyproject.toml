@@ -1,0 +1,41 @@
+[project]
+name = "br-com-onggabriel-backend-www"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=5.2.8",
+    "django-filter>=25.2",
+    "djangorestframework>=3.16.1",
+    "djangorestframework-simplejwt>=5.5.1",
+    "python-decouple>=3.8",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.4",
+    "taskipy>=1.14.1",
+]
+
+[tool.ruff]
+extend-exclude = ['migrations', 'settings.py', 'manage.py']
+line-length = 99
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+ignore = ['PLR6301', 'I001']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+format = 'ruff format'
+post_format = 'ruff check --fix'
+run = 'uv run src/manage.py runserver'
+makemigrations = 'uv run src/manage.py makemigrations'
+migrate = 'uv run src/manage.py migrate'
+superuser = 'uv run src/manage.py createsuperuser'
