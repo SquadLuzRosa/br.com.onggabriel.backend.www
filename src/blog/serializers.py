@@ -1,0 +1,55 @@
+from rest_framework import serializers
+
+from authentication.models import CustomUser
+from blog.models import Category, Post
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description']
+
+
+class PostSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    categories = CategorySerializer(many=True, read_only=True)
+
+    category_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        source='categories',
+        many=True,
+        write_only=True
+    )
+
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'slug',
+            'title',
+            'content',
+            'author',
+            'created_at',
+            'updated_at',
+            'cover_image',
+            'categories',
+            'category_ids',
+        ]
+        read_only_fields = ['slug', 'created_at', 'updated_at', 'author']
+
+    def validate(self, attrs):
+        request = self.context.get('request')
+        author = request.user if request and request.user.is_authenticated else None
+
+        if author and Post.objects.filter(author=author, title=attrs.get('title')).exists():
+            raise serializers.ValidationError({
+                'errors': 'Você já possui um post com este título.'
+            })
+
+        return attrs
