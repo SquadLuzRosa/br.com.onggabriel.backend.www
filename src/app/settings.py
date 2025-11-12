@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 from decouple import config
@@ -169,4 +170,10 @@ REST_FRAMEWORK = {
     ],
     # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # 'DEFAULT_FILTER_BACKENDS': ['dj_rql.drf.RQLFilterBackend'],
+}
+
+# JWT CONFIGURATION
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
