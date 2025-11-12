@@ -17,7 +17,35 @@ SECRET_KEY = config('SECRET_KEY', 'any-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = EnvUtils.env_str_to_boolean('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'api.onggabriel.com.br',
+    'localhost',
+    '127.0.0.1',
+]
+
+# CORS ALLOWED
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    config('FRONTEND_URL', ''),
+    'https://onggabriel.com.br',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-csrf-token',
+    'x-xsrf-token',
+]
 
 
 # Application definition
