@@ -9,6 +9,7 @@ dependencies = [
     "django-filter>=25.2",
     "djangorestframework>=3.16.1",
     "djangorestframework-simplejwt>=5.5.1",
+    "pillow>=12.0.0",
     "python-decouple>=3.8",
 ]
 
@@ -20,12 +21,11 @@ dev = [
 
 [tool.ruff]
 extend-exclude = ['migrations', 'settings.py', 'manage.py']
-line-length = 99
 
 [tool.ruff.lint]
 preview = true
 select = ['I', 'F', 'E', 'W', 'PL', 'PT']
-ignore = ['PLR6301', 'I001']
+ignore = ['PLR6301', 'I001', 'E501']
 
 [tool.ruff.format]
 preview = true
