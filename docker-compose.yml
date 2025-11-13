@@ -1,0 +1,55 @@
+services:
+  data_base:
+    image: postgres:15
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web_api:
+    build: .
+    env_file:
+      - .env
+    command: >
+      sh -c "uv run src/manage.py migrate --noinput &&
+           if [ \"$DJANGO_ENV\" = 'production' ]; then
+             uv run src/manage.py collectstatic --noinput &&
+             uv run gunicorn app.wsgi:application --bind 0.0.0.0:${DJANGO_PORT} --chdir src;
+           else
+             uv run src/manage.py runserver 0.0.0.0:${DJANGO_PORT};
+           fi"
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "${DJANGO_PORT}:${DJANGO_PORT}"
+    depends_on:
+      data_base:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - .venv/
+            - .uv/
+            - __pycache__/
+            - "*.pyc"
+            - "*.pyo"
+            - db.sqlite3
+
+        - action: rebuild
+          path: ./pyproject.toml
+
+volumes:
+  postgres_data:

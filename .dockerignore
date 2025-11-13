@@ -1,0 +1,50 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# UV cache
+.uv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Database
+db.sqlite3
+*.db
+
+# Docker volumes
+postgres_data/
+
+# Git
+.git/
+.gitattributes
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Scripts
+check_code.sh
+entrypoint.sh
+
+# Environment
+.env
+.env.local
+
+# Documentation
+README.md
+*.md
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
