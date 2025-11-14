@@ -1,4 +1,5 @@
 import django_filters
+from django.conf import settings
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models import Q
 
@@ -31,14 +32,20 @@ class PostFilter(django_filters.FilterSet):
 
     def filter_keyword(self, queryset, _name, value):
         """
-        Filter posts by keyword with relevance ranking using PostgreSQL Full Text Search.
+        Filter posts by keyword in title or content.
+        Uses PostgreSQL Full Text Search when available, otherwise falls back to icontains.
         Orders by relevance: title matches first, then content matches.
         """
-        search_vector = SearchVector('title', weight='A') + SearchVector('content', weight='B')
-        search_query = SearchQuery(value)
+        if 'postgresql' in settings.DATABASES['default']['ENGINE']:
+            search_vector = SearchVector('title', weight='A') + SearchVector('content', weight='B')
+            search_query = SearchQuery(value)
 
-        return queryset.annotate(
-            rank=SearchRank(search_vector, search_query)
-        ).filter(
-            Q(title__icontains=value) | Q(content__icontains=value)
-        ).order_by('-rank')
+            return queryset.annotate(
+                rank=SearchRank(search_vector, search_query)
+            ).filter(
+                Q(title__icontains=value) | Q(content__icontains=value)
+            ).order_by('-rank')
+        else:
+            return queryset.filter(
+                Q(title__icontains=value) | Q(content__icontains=value)
+            )
