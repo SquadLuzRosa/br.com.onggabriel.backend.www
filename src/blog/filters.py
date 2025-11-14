@@ -2,31 +2,31 @@ import django_filters
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models import Q
 
+from blog.models import Category, Post
+
 
 class CategoryFilter(django_filters.FilterSet):
     class Meta:
+        model = Category
         fields = ['id', 'name', 'created_at', 'updated_at']
 
 
 class PostFilter(django_filters.FilterSet):
     keyword = django_filters.CharFilter(method='filter_keyword')
 
-    created_at__gt = django_filters.DateTimeFilter(field_name='created_at', lookup_expr='created_at__gt')
-    created_at__lt = django_filters.DateTimeFilter(field_name='created_at', lookup_expr='created_at__lt')
-    updated_at__gt = django_filters.DateTimeFilter(field_name='updated_at', lookup_expr='updated_at__gt')
-    updated_at__lt = django_filters.DateTimeFilter(field_name='updated_at', lookup_expr='updated_at__lt')
+    created_at__gt = django_filters.DateTimeFilter(field_name='created_at', lookup_expr='gt')
+    created_at__lt = django_filters.DateTimeFilter(field_name='created_at', lookup_expr='lt')
+    updated_at__gt = django_filters.DateTimeFilter(field_name='updated_at', lookup_expr='gt')
+    updated_at__lt = django_filters.DateTimeFilter(field_name='updated_at', lookup_expr='lt')
 
     class Meta:
+        model = Post
         fields = [
             'id',
             'title',
-            'content',
             'author',
             'slug',
-            'meta_description',
             'categories',
-            'created_at',
-            'updated_at',
         ]
 
     def filter_keyword(self, queryset, _name, value):
