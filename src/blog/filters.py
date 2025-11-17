@@ -14,6 +14,8 @@ class CategoryFilter(django_filters.FilterSet):
 
 class PostFilter(django_filters.FilterSet):
     keyword = django_filters.CharFilter(method='filter_keyword')
+    category_id = django_filters.CharFilter(field_name='categories__id', lookup_expr='iexact')
+    category_name = django_filters.CharFilter(field_name='categories__name', lookup_expr='icontains')
 
     created_at__gt = django_filters.DateTimeFilter(field_name='created_at', lookup_expr='gt')
     created_at__lt = django_filters.DateTimeFilter(field_name='created_at', lookup_expr='lt')

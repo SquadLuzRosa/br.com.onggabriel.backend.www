@@ -24,7 +24,8 @@ class PostSerializer(serializers.ModelSerializer):
         queryset=Category.objects.all(),
         source='categories',
         many=True,
-        write_only=True
+        write_only=True,
+        required=False
     )
 
     class Meta:
@@ -42,6 +43,28 @@ class PostSerializer(serializers.ModelSerializer):
             'category_ids',
         ]
         read_only_fields = ['slug', 'created_at', 'updated_at', 'author']
+        extra_kwargs = {
+            'categories': {'required': False}
+        }
+
+    def to_internal_value(self, data):
+        """
+        Handle both 'categories' and 'category_ids' in the payload.
+        """
+        # If 'categories' is in data (from form-data), rename it to 'category_ids'
+        if 'categories' in data and 'category_ids' not in data:
+            data = data.copy()
+            categories_value = data.pop('categories')
+            
+            # Handle both single UUID and list of UUIDs
+            if isinstance(categories_value, str):
+                data['category_ids'] = [categories_value]
+            elif isinstance(categories_value, list):
+                data['category_ids'] = categories_value
+            else:
+                data['category_ids'] = [categories_value]
+        
+        return super().to_internal_value(data)
 
     def validate(self, attrs):
         request = self.context.get('request')
@@ -53,3 +76,27 @@ class PostSerializer(serializers.ModelSerializer):
             })
 
         return attrs
+
+    def create(self, validated_data):
+        """
+        Override create to handle ManyToMany relationship for categories.
+        """
+        categories = validated_data.pop('categories', [])
+        post = Post.objects.create(**validated_data)
+        post.categories.set(categories)
+        return post
+
+    def update(self, instance, validated_data):
+        """
+        Override update to handle ManyToMany relationship for categories.
+        """
+        categories = validated_data.pop('categories', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if categories is not None:
+            instance.categories.set(categories)
+
+        return instance
