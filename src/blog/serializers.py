@@ -24,8 +24,7 @@ class PostSerializer(serializers.ModelSerializer):
         queryset=Category.objects.all(),
         source='categories',
         many=True,
-        write_only=True,
-        required=False
+        write_only=True
     )
 
     class Meta:
@@ -43,28 +42,6 @@ class PostSerializer(serializers.ModelSerializer):
             'category_ids',
         ]
         read_only_fields = ['slug', 'created_at', 'updated_at', 'author']
-        extra_kwargs = {
-            'categories': {'required': False}
-        }
-
-    def to_internal_value(self, data):
-        """
-        Handle both 'categories' and 'category_ids' in the payload.
-        """
-        # If 'categories' is in data (from form-data), rename it to 'category_ids'
-        if 'categories' in data and 'category_ids' not in data:
-            data = data.copy()
-            categories_value = data.pop('categories')
-            
-            # Handle both single UUID and list of UUIDs
-            if isinstance(categories_value, str):
-                data['category_ids'] = [categories_value]
-            elif isinstance(categories_value, list):
-                data['category_ids'] = categories_value
-            else:
-                data['category_ids'] = [categories_value]
-        
-        return super().to_internal_value(data)
 
     def validate(self, attrs):
         request = self.context.get('request')
