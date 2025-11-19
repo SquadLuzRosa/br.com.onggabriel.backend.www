@@ -24,9 +24,15 @@ class PostModelViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         """
         Override retrieve to automatically increment view count when fetching a post by ID.
+        Also increments view count for all categories associated with the post.
         """
         instance = self.get_object()
         Post.objects.filter(pk=instance.pk).update(views_count=F('views_count') + 1)
+
+        category_ids = instance.categories.values_list('id', flat=True)
+        if category_ids:
+            Category.objects.filter(id__in=category_ids).update(views_count=F('views_count') + 1)
+
         instance.refresh_from_db()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
@@ -34,6 +40,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         """
         Override list to increment view count when filtering by slug.
+        Also increments view count for all categories associated with the post.
         """
         response = super().list(request, *args, **kwargs)
 
@@ -45,6 +52,10 @@ class PostModelViewSet(viewsets.ModelViewSet):
                 Post.objects.filter(pk=post_id).update(views_count=F('views_count') + 1)
                 post = Post.objects.get(pk=post_id)
                 results[0]['views_count'] = post.views_count
+
+                category_ids = post.categories.values_list('id', flat=True)
+                if category_ids:
+                    Category.objects.filter(id__in=category_ids).update(views_count=F('views_count') + 1)
 
         return response
 

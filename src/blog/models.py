@@ -10,6 +10,7 @@ class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
     name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
     description = models.TextField(blank=True, null=True, verbose_name='Descrição')
+    views_count = models.PositiveIntegerField(default=0, verbose_name='Visualizações')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
@@ -50,7 +51,6 @@ class Post(models.Model):
         verbose_name='Categorias'
     )
 
-    # Engagement metrics
     views_count = models.PositiveIntegerField(default=0, verbose_name='Visualizações')
     shares_count = models.PositiveIntegerField(default=0, verbose_name='Compartilhamentos')
 

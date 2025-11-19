@@ -13,7 +13,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'views_count']
+        read_only_fields = ['views_count']
 
 
 class PostSerializer(serializers.ModelSerializer):
