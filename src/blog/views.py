@@ -1,6 +1,9 @@
 from django.db.models import F
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
@@ -13,7 +16,11 @@ class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.select_related('author').prefetch_related('categories')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = PostFilter
+    ordering_fields = ('views_count', 'shares_count', 'created_at', 'updated_at', 'title')
+    ordering = ('-created_at',)
+    pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
         """
@@ -78,4 +85,8 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = CategoryFilter
+    ordering_fields = ('views_count', 'created_at', 'updated_at', 'name')
+    ordering = ('-created_at',)
+    pagination_class = LimitOffsetPagination
