@@ -50,6 +50,10 @@ class Post(models.Model):
         verbose_name='Categorias'
     )
 
+    # Engagement metrics
+    views_count = models.PositiveIntegerField(default=0, verbose_name='Visualizações')
+    shares_count = models.PositiveIntegerField(default=0, verbose_name='Compartilhamentos')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 

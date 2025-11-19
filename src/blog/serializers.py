@@ -40,8 +40,10 @@ class PostSerializer(serializers.ModelSerializer):
             'cover_image',
             'categories',
             'category_ids',
+            'views_count',
+            'shares_count',
         ]
-        read_only_fields = ['slug', 'created_at', 'updated_at', 'author']
+        read_only_fields = ['slug', 'created_at', 'updated_at', 'author', 'views_count', 'shares_count']
 
     def validate(self, attrs):
         request = self.context.get('request')
