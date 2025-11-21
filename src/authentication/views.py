@@ -1,10 +1,13 @@
+import secrets
+
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-import secrets
+
+from authentication.serializers import UserSerializer
 
 
 class CookieTokenObtainPairView(TokenObtainPairView):
@@ -136,3 +139,11 @@ class LogoutView(APIView):
         response.delete_cookie('XSRF-TOKEN')
 
         return response
+
+
+class UserMeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
