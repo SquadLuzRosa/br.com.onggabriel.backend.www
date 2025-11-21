@@ -7,9 +7,12 @@ from blog.models import Category, Post
 
 
 class CategoryFilter(django_filters.FilterSet):
+    views_count__gt = django_filters.NumberFilter(field_name='views_count', lookup_expr='gt')
+    views_count__lt = django_filters.NumberFilter(field_name='views_count', lookup_expr='lt')
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'created_at', 'updated_at', 'views_count']
 
 
 class PostFilter(django_filters.FilterSet):
@@ -22,6 +25,11 @@ class PostFilter(django_filters.FilterSet):
     updated_at__gt = django_filters.DateTimeFilter(field_name='updated_at', lookup_expr='gt')
     updated_at__lt = django_filters.DateTimeFilter(field_name='updated_at', lookup_expr='lt')
 
+    views_count__gt = django_filters.NumberFilter(field_name='views_count', lookup_expr='gt')
+    views_count__lt = django_filters.NumberFilter(field_name='views_count', lookup_expr='lt')
+    shares_count__gt = django_filters.NumberFilter(field_name='shares_count', lookup_expr='gt')
+    shares_count__lt = django_filters.NumberFilter(field_name='shares_count', lookup_expr='lt')
+
     class Meta:
         model = Post
         fields = [
@@ -30,6 +38,8 @@ class PostFilter(django_filters.FilterSet):
             'author',
             'slug',
             'categories',
+            'views_count',
+            'shares_count',
         ]
 
     def filter_keyword(self, queryset, _name, value):
