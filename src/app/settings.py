@@ -35,7 +35,9 @@ CORS_ALLOWED_ORIGINS = [
     config('FRONTEND_URL', ''),
     'https://onggabriel.com.br',
     'http://localhost:3000',
+    'http://localhost:3333',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:3333',
 ]
 
 CORS_ALLOW_HEADERS = [
