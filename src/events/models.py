@@ -2,6 +2,8 @@ from uuid import uuid4
 
 from django.db import models
 
+from utils.file_utils import event_image_upload_path
+
 
 class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
@@ -13,7 +15,7 @@ class Event(models.Model):
     link = models.URLField(max_length=200, verbose_name='Link', null=True, blank=True)
     description = models.CharField(max_length=300, verbose_name='Descrição Curta')
     content = models.TextField(blank=True, null=True, verbose_name='Conteúdo do Evento')
-    image = models.ImageField(upload_to='covers/', blank=True, null=True, verbose_name='imagem do evento')
+    image = models.ImageField(upload_to=event_image_upload_path, blank=True, null=True, verbose_name='imagem do evento')
     is_participation = models.BooleanField(verbose_name='é obrigatório participação?', default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.text import slugify
 
 from authentication.models import CustomUser
+from utils.file_utils import post_cover_image_upload_path
 
 
 class Category(models.Model):
@@ -43,7 +44,7 @@ class Post(models.Model):
         verbose_name='Autor'
     )
     slug = models.SlugField(max_length=300, unique=True, editable=False)
-    cover_image = models.ImageField(upload_to='posts/covers/', blank=True, null=True, verbose_name='Imagem da capa')
+    cover_image = models.ImageField(upload_to=post_cover_image_upload_path, blank=True, null=True, verbose_name='Imagem da capa')
     meta_description = models.CharField(max_length=255, verbose_name='Meta descrição', blank=True, null=True)
     categories = models.ManyToManyField(
         Category,
