@@ -16,6 +16,27 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'views_count']
         read_only_fields = ['views_count']
 
+    def validate(self, attrs):
+        """
+        Validate that category name is unique (case-insensitive).
+        """
+        name = attrs.get('name')
+        if name:
+            normalized_name = name.lower()
+            instance = self.instance
+
+            if instance:
+                if Category.objects.filter(name=normalized_name).exclude(pk=instance.pk).exists():
+                    raise serializers.ValidationError({
+                        'errors': f'Já existe uma categoria com o nome "{name}".'
+                    })
+            elif Category.objects.filter(name=normalized_name).exists():
+                raise serializers.ValidationError({
+                    'errors': f'Já existe uma categoria com o nome "{name}".'
+                })
+
+        return attrs
+
 
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
