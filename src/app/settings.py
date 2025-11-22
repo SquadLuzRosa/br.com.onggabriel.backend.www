@@ -1,4 +1,3 @@
-import re
 from datetime import timedelta
 from pathlib import Path
 
@@ -25,6 +24,9 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
 ]
+allowed_host_env = config('ALLOWED_HOST', None)
+if allowed_host_env:
+    ALLOWED_HOSTS.insert(0, str(allowed_host_env))
 
 # CORS ALLOWED
 CORS_ALLOW_CREDENTIALS = True
