@@ -12,13 +12,13 @@ def unique_image_upload_path(instance, filename, subfolder='uploads'):
         subfolder: Subfolder path (e.g., 'posts/covers', 'events/images')
 
     Returns:
-        str: Unique file path in format: {subfolder}/{uuid}.{extension}
+        str: Unique file path in format: {subfolder}/{original_name}_{uuid}.{extension}
 
     Example:
-        uploads/a3c4e5f6-1234-5678-9abc-def012345678.jpg
+        uploads/profile_photo_a3c4e5f6-1234-5678-9abc-def012345678.jpg
     """
-    ext = os.path.splitext(filename)[1]
-    unique_filename = f"{uuid4()}{ext}"
+    name, ext = os.path.splitext(filename)
+    unique_filename = f"{name}_{uuid4()}{ext}"
     return os.path.join(subfolder, unique_filename)
 
 
