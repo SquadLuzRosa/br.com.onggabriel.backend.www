@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'authentication',
     'blog',
     'events',
+    'testmonial',
 ]
 
 MIDDLEWARE = [
