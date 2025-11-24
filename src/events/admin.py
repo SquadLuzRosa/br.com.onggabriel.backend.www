@@ -9,7 +9,7 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'content', 'type', 'address')
     ordering = ('-event_date', 'title')
     readonly_fields = ('created_at', 'updated_at')
-    
+
     fieldsets = (
         ('Informações Básicas', {
             'fields': ('title', 'type', 'description')
