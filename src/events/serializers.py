@@ -20,4 +20,7 @@ class EventsSerializer(serializers.ModelSerializer):
             'link',
             'event_end_time',
             'is_participation',
+            'created_at',
+            'updated_at',
         ]
+    read_only_fields = ['created_at', 'updated_at']
