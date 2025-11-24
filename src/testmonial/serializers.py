@@ -12,6 +12,11 @@ class FunctionSerializer(serializers.ModelSerializer):
 
 class DepoimentSerializer(serializers.ModelSerializer):
     function = FunctionSerializer(read_only=True)
+    function_id = serializers.PrimaryKeyRelatedField(
+        queryset=Function.objects.all(),
+        source='function',
+        write_only=True
+    )
 
     class Meta:
         model = Depoiment
@@ -19,6 +24,7 @@ class DepoimentSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'function',
+            'function_id',
             'message',
             'cover_image',
             'created_at',
