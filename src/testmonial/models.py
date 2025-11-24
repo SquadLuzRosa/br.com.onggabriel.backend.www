@@ -32,8 +32,8 @@ class Depoiment(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
     class Meta:
-        verbose_name = 'Depoiment'
-        verbose_name_plural = 'Depoiments'
+        verbose_name = 'Depoimento'
+        verbose_name_plural = 'Depoimentos'
         ordering = ['-created_at']
 
     def __str__(self):
