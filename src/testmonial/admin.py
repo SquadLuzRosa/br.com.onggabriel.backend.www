@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from testmonial.models import Depoiment
+from testmonial.models import Depoiment, Function
+
+
+@admin.register(Function)
+class FunctionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    search_fields = ('name',)
+    readonly_fields = ('id', 'created_at', 'updated_at')
+    ordering = ('-created_at',)
 
 
 @admin.register(Depoiment)
