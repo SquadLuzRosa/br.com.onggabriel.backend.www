@@ -75,6 +75,8 @@ INSTALLED_APPS = [
     'blog',
     'events',
     'testmonial',
+
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -189,7 +191,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # JWT CONFIGURATION
@@ -270,3 +272,19 @@ JAZZMIN_UI_TWEAKS = {
 # HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
+
+
+# SPECTACULAR CONFIG
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Ong Gabriel',
+    'DESCRIPTION': (
+        'Esta é a API oficial da Ong Gabriel. '
+        'Ela foi desenvolvida com Django Rest Framework para oferecer uma interface robusta e segura, '
+        'permitindo o gerenciamento completo das funcionalidades da ONG. \n\n'
+        'A API disponibiliza endpoint para cadastro e autenticação de usuários. \n\n'
+        'Todos os endpoints seguem as melhores práticas RESTful e possuem suporte a autenticação via tokens. '
+        'A documentação abaixo descreve todos os recursos disponíveis, os parâmetros esperados e exemplos de uso.'
+    ),
+    'VERSION': '1.0.0',
+}
