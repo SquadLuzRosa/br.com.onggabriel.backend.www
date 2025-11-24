@@ -1,9 +1,12 @@
+from uuid import uuid4
+
 from django.db import models
 
 from utils.file_utils import depoiment_image_upload_path
 
 
 class Depoiment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, verbose_name='ID')
     name = models.CharField(max_length=100)
     function = models.CharField(max_length=100)
     description = models.TextField()
