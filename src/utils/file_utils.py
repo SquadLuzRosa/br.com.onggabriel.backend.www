@@ -36,3 +36,11 @@ def event_image_upload_path(instance, filename):
     Format: events/covers/{uuid}.{extension}
     """
     return unique_image_upload_path(instance, filename, 'events/covers')
+
+
+def depoiment_image_upload_path(instance, filename):
+    """
+    Generate unique filename for depoiment images.
+    Format: depoiments/covers/{uuid}.{extension}
+    """
+    return unique_image_upload_path(instance, filename, 'depoiments/covers')
