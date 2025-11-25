@@ -71,8 +71,8 @@ class DonateSection(models.Model):
         return str(self.id)
 
     class Meta:
-        verbose_name = '[HOME] Missão'
-        verbose_name_plural = '[HOME] Missão'
+        verbose_name = '[HOME] Doação'
+        verbose_name_plural = '[HOME] Doação'
 
 
 class StatsCard(models.Model):
