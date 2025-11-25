@@ -7,6 +7,7 @@ from .home import (
     DepoimentCardViewSet,
     ContactSectionViewSet,
     TributeSectionViewSet,
+    HomePageViewSet,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     'DepoimentCardViewSet',
     'ContactSectionViewSet',
     'TributeSectionViewSet',
+    'HomePageViewSet',
 ]

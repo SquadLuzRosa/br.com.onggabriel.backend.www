@@ -274,3 +274,17 @@ class TributeSectionSerializer(serializers.ModelSerializer):
                 validated_data['right_image'] = right_image
 
         return super().update(instance, validated_data)
+
+
+class HomePageSerializer(serializers.Serializer):
+    """
+    Serializer that returns all home page sections in a single response.
+    """
+    presentation = PresentationSectionSerializer(read_only=True)
+    mission = MissionSectionSerializer(read_only=True)
+    donate = DonateSectionSerializer(read_only=True)
+    stats = StatsCardSerializer(many=True, read_only=True)
+    volunteer = VolunteerSectionSerializer(read_only=True)
+    depoiments = DepoimentCardSerializer(many=True, read_only=True)
+    contact = ContactSectionSerializer(read_only=True)
+    tribute = TributeSectionSerializer(read_only=True)

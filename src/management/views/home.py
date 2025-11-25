@@ -173,3 +173,60 @@ class TributeSectionViewSet(SingletonViewSetMixin, viewsets.ModelViewSet):
     serializer_class = TributeSectionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     model = TributeSection
+
+
+class HomePageViewSet(viewsets.ViewSet):
+    """
+    ViewSet that returns all home page sections in a single response.
+    """
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    @action(detail=False, methods=['get'], url_path='complete')
+    def complete(self, request):
+        """
+        Returns complete home page data with all sections.
+        """
+        data = {
+            'presentation': None,
+            'mission': None,
+            'donate': None,
+            'stats': [],
+            'volunteer': None,
+            'depoiments': [],
+            'contact': None,
+            'tribute': None,
+        }
+
+        # Singleton sections
+        presentation = PresentationSection.objects.first()
+        if presentation:
+            data['presentation'] = PresentationSectionSerializer(presentation).data
+
+        mission = MissionSection.objects.first()
+        if mission:
+            data['mission'] = MissionSectionSerializer(mission).data
+
+        donate = DonateSection.objects.first()
+        if donate:
+            data['donate'] = DonateSectionSerializer(donate).data
+
+        volunteer = VolunteerSection.objects.first()
+        if volunteer:
+            data['volunteer'] = VolunteerSectionSerializer(volunteer).data
+
+        contact = ContactSection.objects.first()
+        if contact:
+            data['contact'] = ContactSectionSerializer(contact).data
+
+        tribute = TributeSection.objects.first()
+        if tribute:
+            data['tribute'] = TributeSectionSerializer(tribute).data
+
+        # Multiple instances
+        stats = StatsCard.objects.filter(visible=True).order_by('card_number')
+        data['stats'] = StatsCardSerializer(stats, many=True).data
+
+        depoiments = DepoimentCard.objects.filter(visible=True).order_by('card_number')
+        data['depoiments'] = DepoimentCardSerializer(depoiments, many=True).data
+
+        return Response(data)

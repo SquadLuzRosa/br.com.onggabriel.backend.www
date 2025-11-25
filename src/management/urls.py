@@ -10,6 +10,7 @@ from management.views import (
     DepoimentCardViewSet,
     ContactSectionViewSet,
     TributeSectionViewSet,
+    HomePageViewSet,
 )
 
 router = DefaultRouter()
@@ -21,6 +22,7 @@ router.register(r'home/volunteer', VolunteerSectionViewSet, basename='volunteer-
 router.register(r'home/depoiments', DepoimentCardViewSet, basename='depoiment-card')
 router.register(r'home/contact', ContactSectionViewSet, basename='contact-section')
 router.register(r'home/tribute', TributeSectionViewSet, basename='tribute-section')
+router.register(r'home', HomePageViewSet, basename='home-page')
 
 urlpatterns = [
     path('', include(router.urls))

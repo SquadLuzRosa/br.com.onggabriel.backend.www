@@ -7,6 +7,7 @@ from .home import (
     DepoimentCardSerializer,
     ContactSectionSerializer,
     TributeSectionSerializer,
+    HomePageSerializer,
 )
 from .media import ManagementMediaSerializer
 
@@ -20,4 +21,5 @@ __all__ = [
     'DepoimentCardSerializer',
     'ContactSectionSerializer',
     'TributeSectionSerializer',
+    'HomePageSerializer',
 ]
