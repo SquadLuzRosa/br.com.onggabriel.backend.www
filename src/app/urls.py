@@ -14,6 +14,7 @@ urlpatterns = [
     path('v1/', include('blog.urls')),
     path('v1/', include('events.urls')),
     path('v1/', include('testmonial.urls')),
+    path('v1/', include('management.urls')),
 ]
 
 if settings.DEBUG:
