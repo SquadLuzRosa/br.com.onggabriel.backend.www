@@ -200,33 +200,33 @@ class HomePageViewSet(viewsets.ViewSet):
         # Singleton sections
         presentation = PresentationSection.objects.first()
         if presentation:
-            data['presentation'] = PresentationSectionSerializer(presentation).data
+            data['presentation'] = PresentationSectionSerializer(presentation, context={'request': request}).data
 
         mission = MissionSection.objects.first()
         if mission:
-            data['mission'] = MissionSectionSerializer(mission).data
+            data['mission'] = MissionSectionSerializer(mission, context={'request': request}).data
 
         donate = DonateSection.objects.first()
         if donate:
-            data['donate'] = DonateSectionSerializer(donate).data
+            data['donate'] = DonateSectionSerializer(donate, context={'request': request}).data
 
         volunteer = VolunteerSection.objects.first()
         if volunteer:
-            data['volunteer'] = VolunteerSectionSerializer(volunteer).data
+            data['volunteer'] = VolunteerSectionSerializer(volunteer, context={'request': request}).data
 
         contact = ContactSection.objects.first()
         if contact:
-            data['contact'] = ContactSectionSerializer(contact).data
+            data['contact'] = ContactSectionSerializer(contact, context={'request': request}).data
 
         tribute = TributeSection.objects.first()
         if tribute:
-            data['tribute'] = TributeSectionSerializer(tribute).data
+            data['tribute'] = TributeSectionSerializer(tribute, context={'request': request}).data
 
         # Multiple instances
         stats = StatsCard.objects.filter(visible=True).order_by('card_number')
-        data['stats'] = StatsCardSerializer(stats, many=True).data
+        data['stats'] = StatsCardSerializer(stats, many=True, context={'request': request}).data
 
         depoiments = DepoimentCard.objects.filter(visible=True).order_by('card_number')
-        data['depoiments'] = DepoimentCardSerializer(depoiments, many=True).data
+        data['depoiments'] = DepoimentCardSerializer(depoiments, many=True, context={'request': request}).data
 
         return Response(data)
