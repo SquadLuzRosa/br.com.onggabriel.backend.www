@@ -10,6 +10,7 @@ from management.models import (
     StatsCard,
     VolunteerSection,
     DepoimentCard,
+    ActivityCard,
     ContactSection,
     TributeSection,
 )
@@ -20,6 +21,7 @@ from management.serializers import (
     StatsCardSerializer,
     VolunteerSectionSerializer,
     DepoimentCardSerializer,
+    ActivityCardSerializer,
     ContactSectionSerializer,
     TributeSectionSerializer,
 )
@@ -155,6 +157,15 @@ class DepoimentCardViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+class ActivityCardViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for ActivityCard. Multiple instances allowed (max 3).
+    """
+    queryset = ActivityCard.objects.all()
+    serializer_class = ActivityCardSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
 class ContactSectionViewSet(SingletonViewSetMixin, viewsets.ModelViewSet):
     """
     ViewSet for ContactSection with singleton behavior.
@@ -181,7 +192,7 @@ class HomePageViewSet(viewsets.ViewSet):
     """
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    @action(detail=False, methods=['get'], url_path='complete')
+    @action(detail=False, methods=['get'])
     def complete(self, request):
         """
         Returns complete home page data with all sections.
@@ -193,6 +204,7 @@ class HomePageViewSet(viewsets.ViewSet):
             'stats': [],
             'volunteer': None,
             'depoiments': [],
+            'activities': [],
             'contact': None,
             'tribute': None,
         }
@@ -228,5 +240,8 @@ class HomePageViewSet(viewsets.ViewSet):
 
         depoiments = DepoimentCard.objects.filter(visible=True).order_by('card_number')
         data['depoiments'] = DepoimentCardSerializer(depoiments, many=True, context={'request': request}).data
+
+        activities = ActivityCard.objects.filter(visible=True).order_by('card_number')
+        data['activities'] = ActivityCardSerializer(activities, many=True, context={'request': request}).data
 
         return Response(data)
