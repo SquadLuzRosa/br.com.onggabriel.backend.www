@@ -177,8 +177,8 @@ class ActivityCard(models.Model):
     card_number = models.PositiveSmallIntegerField(choices=CARD_CHOICES, unique=True)
     visible = models.BooleanField(default=True)
 
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
     image = models.ForeignKey(ManagementMedia, on_delete=models.SET_NULL, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
