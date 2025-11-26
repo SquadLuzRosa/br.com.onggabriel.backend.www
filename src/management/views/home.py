@@ -192,8 +192,7 @@ class HomePageViewSet(viewsets.ViewSet):
     """
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    @action(detail=False, methods=['get'])
-    def complete(self, request):
+    def list(self, request):
         """
         Returns complete home page data with all sections.
         """
