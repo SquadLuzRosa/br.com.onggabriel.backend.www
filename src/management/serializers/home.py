@@ -195,7 +195,6 @@ class ActivityCardSerializer(serializers.ModelSerializer):
             'visible',
             'title',
             'description',
-            'url',
             'image',
             'image_id',
             'created_at',

@@ -214,7 +214,7 @@ class TributeSectionAdmin(admin.ModelAdmin):
 class ActivityCardAdmin(admin.ModelAdmin):
     list_display = ('card_number', 'title', 'visible', 'created_at')
     list_filter = ('card_number', 'visible', 'created_at')
-    search_fields = ('title', 'description', 'url')
+    search_fields = ('title', 'description')
     ordering = ('card_number',)
 
     fieldsets = (
@@ -222,7 +222,7 @@ class ActivityCardAdmin(admin.ModelAdmin):
             'fields': ('card_number', 'visible')
         }),
         ('Conteúdo', {
-            'fields': ('title', 'description', 'url', 'image')
+            'fields': ('title', 'description', 'image')
         }),
         ('Metadados', {
             'fields': ('created_at', 'updated_at'),

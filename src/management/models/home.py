@@ -179,7 +179,6 @@ class ActivityCard(models.Model):
 
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    url = models.URLField(blank=True, null=True)
     image = models.ForeignKey(ManagementMedia, on_delete=models.SET_NULL, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
