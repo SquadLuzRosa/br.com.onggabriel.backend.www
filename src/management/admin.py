@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from management.models import (
+    ActivityCard,
     ContactSection,
     DepoimentCard,
     DonateSection,
@@ -207,3 +208,31 @@ class TributeSectionAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return not TributeSection.objects.exists()
+
+
+@admin.register(ActivityCard)
+class ActivityCardAdmin(admin.ModelAdmin):
+    list_display = ('card_number', 'title', 'visible', 'created_at')
+    list_filter = ('card_number', 'visible', 'created_at')
+    search_fields = ('title', 'description', 'url')
+    ordering = ('card_number',)
+
+    fieldsets = (
+        ('Configuração do Card', {
+            'fields': ('card_number', 'visible')
+        }),
+        ('Conteúdo', {
+            'fields': ('title', 'description', 'url', 'image')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    readonly_fields = ('created_at', 'updated_at')
+
+    def has_add_permission(self, request):
+        if ActivityCard.objects.count() >= ActivityCard.MODELS_LEN:
+            return False
+        return super().has_add_permission(request)
