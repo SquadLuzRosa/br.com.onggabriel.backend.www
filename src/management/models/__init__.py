@@ -1,4 +1,5 @@
 from .home import (
+    ActivityCard,
     ContactSection,
     DepoimentCard,
     DonateSection,
@@ -11,6 +12,7 @@ from .home import (
 from .media import ManagementMedia
 
 __all__ = [
+    'ActivityCard',
     'ContactSection',
     'DepoimentCard',
     'DonateSection',

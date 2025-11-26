@@ -63,7 +63,7 @@ class DonateSection(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
     def save(self, *args, **kwargs):
-        if not self.pk and MissionSection.objects.exists():
+        if not self.pk and DonateSection.objects.exists():
             raise ValidationError('Só é permitido um único registro na sessão de missão da página home.')
         return super().save(*args, **kwargs)
 
@@ -95,7 +95,7 @@ class StatsCard(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
     def save(self, *args, **kwargs):
-        if not self.pk and DepoimentCard.objects.count() >= self.MODELS_LEN:
+        if not self.pk and StatsCard.objects.count() >= self.MODELS_LEN:
             raise ValidationError(f'Só podem existir {self.MODELS_LEN} cards de estatísticas.')
         return super().save(*args, **kwargs)
 
@@ -121,7 +121,7 @@ class VolunteerSection(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
 
     def save(self, *args, **kwargs):
-        if not self.pk and PresentationSection.objects.exists():
+        if not self.pk and VolunteerSection.objects.exists():
             raise ValidationError('Só é permitido um único registro na sessão de voluntário da página home.')
         return super().save(*args, **kwargs)
 
@@ -161,6 +161,41 @@ class DepoimentCard(models.Model):
     class Meta:
         verbose_name = '[HOME] Depoimentos'
         verbose_name_plural = '[HOME] Depoimentos'
+        ordering = ['card_number']
+
+
+class ActivityCard(models.Model):
+    MODELS_LEN = 3
+    CARD_CHOICES = (
+        (1, 'Card 1'),
+        (2, 'Card 2'),
+        (3, 'Card 3'),
+    )
+
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
+
+    card_number = models.PositiveSmallIntegerField(choices=CARD_CHOICES, unique=True)
+    visible = models.BooleanField(default=True)
+
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    url = models.URLField(blank=True, null=True)
+    image = models.ForeignKey(ManagementMedia, on_delete=models.SET_NULL, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
+
+    def save(self, *args, **kwargs):
+        if not self.pk and ActivityCard.objects.count() >= self.MODELS_LEN:
+            raise ValidationError(f'Só podem existir {self.MODELS_LEN} cards de atividade.')
+        return super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f'Card {self.card_number}'
+
+    class Meta:
+        verbose_name = '[HOME] Atividade'
+        verbose_name_plural = '[HOME] Atividades'
         ordering = ['card_number']
 
 
