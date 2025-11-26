@@ -48,3 +48,6 @@ README.md
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Media
+media/
