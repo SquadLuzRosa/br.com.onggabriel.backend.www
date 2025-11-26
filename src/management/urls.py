@@ -8,21 +8,23 @@ from management.views import (
     StatsCardViewSet,
     VolunteerSectionViewSet,
     DepoimentCardViewSet,
+    ActivityCardViewSet,
     ContactSectionViewSet,
     TributeSectionViewSet,
     HomePageViewSet,
 )
 
 router = DefaultRouter()
-router.register(r'home/presentation', PresentationSectionViewSet, basename='presentation-section')
-router.register(r'home/mission', MissionSectionViewSet, basename='mission-section')
-router.register(r'home/donate', DonateSectionViewSet, basename='donate-section')
-router.register(r'home/stats', StatsCardViewSet, basename='stats-card')
-router.register(r'home/volunteer', VolunteerSectionViewSet, basename='volunteer-section')
-router.register(r'home/depoiments', DepoimentCardViewSet, basename='depoiment-card')
-router.register(r'home/contact', ContactSectionViewSet, basename='contact-section')
-router.register(r'home/tribute', TributeSectionViewSet, basename='tribute-section')
-router.register(r'home', HomePageViewSet, basename='home-page')
+router.register(r'cms/home/presentation', PresentationSectionViewSet, basename='presentation-section')
+router.register(r'cms/home/mission', MissionSectionViewSet, basename='mission-section')
+router.register(r'cms/home/donate', DonateSectionViewSet, basename='donate-section')
+router.register(r'cms/home/stats', StatsCardViewSet, basename='stats-card')
+router.register(r'cms/home/volunteer', VolunteerSectionViewSet, basename='volunteer-section')
+router.register(r'cms/home/depoiments', DepoimentCardViewSet, basename='depoiment-card')
+router.register(r'cms/home/activities', ActivityCardViewSet, basename='activity-card')
+router.register(r'cms/home/contact', ContactSectionViewSet, basename='contact-section')
+router.register(r'cms/home/tribute', TributeSectionViewSet, basename='tribute-section')
+router.register(r'cms/home', HomePageViewSet, basename='home-page')
 
 urlpatterns = [
     path('', include(router.urls))
