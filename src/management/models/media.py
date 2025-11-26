@@ -44,7 +44,17 @@ class ManagementMedia(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             base = self.title or self.alt_text or 'media'
-            self.slug = slugify(base)
+            slug = slugify(base)
+
+            original_slug = slug
+            counter = 1
+
+            while ManagementMedia.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f'{original_slug}-{counter}'
+                counter += 1
+
+            self.slug = slug
+
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
