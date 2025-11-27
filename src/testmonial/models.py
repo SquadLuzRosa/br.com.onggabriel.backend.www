@@ -2,8 +2,6 @@ from uuid import uuid4
 
 from django.db import models
 
-from utils.file_utils import depoiment_image_upload_path
-
 
 class Function(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, verbose_name='ID')
@@ -26,7 +24,7 @@ class Depoiment(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome')
     function = models.ForeignKey(Function, on_delete=models.PROTECT, related_name='depoiments', verbose_name='Funções')
     message = models.TextField(verbose_name='Mensagem')
-    cover_image = models.ImageField(upload_to=depoiment_image_upload_path, blank=True, null=True, verbose_name='Foto do depoimento')
+    image = models.ForeignKey('management.ManagementMedia', on_delete=models.SET_NULL, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')

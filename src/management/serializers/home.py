@@ -13,7 +13,6 @@ from management.models import (
     TributeSection,
 )
 from testmonial.models import Depoiment
-from testmonial.serializers import DepoimentSerializer
 from .media import ManagementMediaSerializer
 
 
@@ -154,7 +153,12 @@ class VolunteerSectionSerializer(serializers.ModelSerializer):
 
 
 class DepoimentCardSerializer(serializers.ModelSerializer):
-    depoiment = DepoimentSerializer(read_only=True)
+    def to_representation(self, instance):
+        from testmonial.serializers import DepoimentSerializer  # noqa: F811, PLC0415
+        data = super().to_representation(instance)
+        data['depoiment'] = DepoimentSerializer(instance.depoiment, context=self.context).data if instance.depoiment else None
+        return data
+
     depoiment_id = serializers.PrimaryKeyRelatedField(
         queryset=Depoiment.objects.all(),
         source='depoiment',
