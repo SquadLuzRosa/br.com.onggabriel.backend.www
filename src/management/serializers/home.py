@@ -236,6 +236,7 @@ class ContactSectionSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'description',
+            'to_email',
             'instagram_url',
             'instagram_visible',
             'whatsapp_url',

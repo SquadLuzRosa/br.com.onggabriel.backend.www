@@ -203,6 +203,7 @@ class ContactSection(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
+    to_email = models.EmailField(blank=True, null=True)
 
     instagram_url = models.URLField(blank=True, null=True)
     instagram_visible = models.BooleanField(default=False)
