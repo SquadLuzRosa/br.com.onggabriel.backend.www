@@ -178,6 +178,7 @@ class ContactSectionAdmin(admin.ModelAdmin):
                 'twitter_url', 'twitter_visible',
                 'facebook_url', 'facebook_visible',
                 'youtube_url', 'youtube_visible',
+                'linkedin_url', 'linkedin_visible',
             )
         }),
         ('Metadados', {
