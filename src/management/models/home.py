@@ -205,19 +205,22 @@ class ContactSection(models.Model):
     description = models.CharField(max_length=255)
 
     instagram_url = models.URLField(blank=True, null=True)
-    instagram_icon = models.BooleanField(default=False)
+    instagram_visible = models.BooleanField(default=False)
 
     whatsapp_url = models.URLField(blank=True, null=True)
-    whatsapp_icon = models.BooleanField(default=False)
+    whatsapp_visible = models.BooleanField(default=False)
 
     twitter_url = models.URLField(blank=True, null=True)
-    twitter_icon = models.BooleanField(default=False)
+    twitter_visible = models.BooleanField(default=False)
 
     facebook_url = models.URLField(blank=True, null=True)
-    facebook_icon = models.BooleanField(default=False)
+    facebook_visible = models.BooleanField(default=False)
 
     youtube_url = models.URLField(blank=True, null=True)
-    youtube_icon = models.BooleanField(default=False)
+    youtube_visible = models.BooleanField(default=False)
+
+    linkedin_url = models.URLField(blank=True, null=True)
+    linkedin_visible = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
