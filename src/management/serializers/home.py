@@ -246,6 +246,8 @@ class ContactSectionSerializer(serializers.ModelSerializer):
             'facebook_visible',
             'youtube_url',
             'youtube_visible',
+            'linkedin_url',
+            'linkedin_visible',
             'created_at',
             'updated_at',
         ]
