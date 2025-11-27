@@ -169,7 +169,7 @@ class ContactSectionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Conteúdo', {
-            'fields': ('title', 'description')
+            'fields': ('title', 'description', 'to_email')
         }),
         ('Redes Sociais', {
             'fields': (
