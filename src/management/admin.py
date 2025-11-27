@@ -173,11 +173,11 @@ class ContactSectionAdmin(admin.ModelAdmin):
         }),
         ('Redes Sociais', {
             'fields': (
-                'instagram_url', 'instagram_icon',
-                'whatsapp_url', 'whatsapp_icon',
-                'twitter_url', 'twitter_icon',
-                'facebook_url', 'facebook_icon',
-                'youtube_url', 'youtube_icon',
+                'instagram_url', 'instagram_visible',
+                'whatsapp_url', 'whatsapp_visible',
+                'twitter_url', 'twitter_visible',
+                'facebook_url', 'facebook_visible',
+                'youtube_url', 'youtube_visible',
             )
         }),
         ('Metadados', {
