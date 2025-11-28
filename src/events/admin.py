@@ -1,5 +1,46 @@
 from django.contrib import admin
-from events.models import Event
+from events.models import Address, Event, EventType
+
+
+@admin.register(EventType)
+class EventTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('name', 'description')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('name',)
+
+    fieldsets = (
+        ('Informações do Tipo', {
+            'fields': ('name', 'description')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('street', 'city', 'state', 'zipcode', 'created_at')
+    list_filter = ('state', 'city', 'created_at')
+    search_fields = ('street', 'number', 'district', 'city', 'state', 'zipcode')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('city', 'street')
+
+    fieldsets = (
+        ('Endereço', {
+            'fields': ('street', 'number', 'district', 'city', 'state', 'zipcode')
+        }),
+        ('Google Maps', {
+            'fields': ('google_maps_url',)
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
 
 
 @admin.register(Event)
