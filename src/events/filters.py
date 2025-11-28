@@ -1,7 +1,19 @@
 import django_filters
 from django.db.models import Q
 
-from events.models import Event
+from events.models import Address, Event, EventType
+
+
+class EventTypeFilter(django_filters.FilterSet):
+    class Meta:
+        model = EventType
+        fields = ['id', 'name', 'created_at', 'updated_at']
+
+
+class AddressFilter(django_filters.FilterSet):
+    class Meta:
+        model = Address
+        fields = ['id', 'street', 'street', 'district', 'created_at', 'updated_at', 'city', 'state', 'zipcode']
 
 
 class EventFilter(django_filters.FilterSet):

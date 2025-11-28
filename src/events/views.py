@@ -4,9 +4,31 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from events.models import Event
-from events.serializers import EventsSerializer
-from events.filters import EventFilter
+from events.models import Address, Event, EventType
+from events.serializers import AddressSerializer, EventsSerializer, EventTypeSerializer
+from events.filters import AddressFilter, EventFilter, EventTypeFilter
+
+
+class AddressModelViewSet(viewsets.ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_class = AddressFilter
+    ordering_fields = ('created_at', 'updated_at', 'name')
+    ordering = ('-created_at',)
+    pagination_class = LimitOffsetPagination
+
+
+class EventTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = EventType.objects.all()
+    serializer_class = EventTypeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_class = EventTypeFilter
+    ordering_fields = ('created_at', 'updated_at', 'name')
+    ordering = ('-created_at',)
+    pagination_class = LimitOffsetPagination
 
 
 class EventsViewSet(viewsets.ModelViewSet):
