@@ -41,6 +41,22 @@ class EventTypeSerializer(serializers.ModelSerializer):
 
 
 class EventsSerializer(serializers.ModelSerializer):
+    type = EventTypeSerializer(read_only=True)
+    type_id = serializers.PrimaryKeyRelatedField(
+        queryset=EventType.objects.all(),
+        source='type',
+        write_only=True
+    )
+
+    address = AddressSerializer(read_only=True)
+    address_id = serializers.PrimaryKeyRelatedField(
+        queryset=Address.objects.all(),
+        source='address',
+        write_only=True,
+        required=False,
+        allow_null=True
+    )
+
     medias = ManagementMediaSerializer(many=True, required=False)
     media_ids = serializers.PrimaryKeyRelatedField(
         queryset=ManagementMedia.objects.all(),
@@ -70,15 +86,23 @@ class EventsSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at']
 
     def create(self, validated_data):
-        medias = validated_data.pop('medias', [])
+        nested_medias = validated_data.pop('medias', [])
         instance = super().create(validated_data)
-        if medias:
-            instance.medias.set(medias)
+
+        for media_data in nested_medias:
+            media = ManagementMedia.objects.create(**media_data)
+            instance.medias.add(media)
+
         return instance
 
     def update(self, instance, validated_data):
-        medias = validated_data.pop('medias', None)
+        nested_medias = validated_data.pop('medias', None)
         instance = super().update(instance, validated_data)
-        if medias is not None:
-            instance.medias.set(medias)
+
+        if nested_medias is not None:
+            instance.medias.clear()
+            for media_data in nested_medias:
+                media = ManagementMedia.objects.create(**media_data)
+                instance.medias.add(media)
+
         return instance
