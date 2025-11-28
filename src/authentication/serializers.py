@@ -7,3 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+
+class LogoutSerializer(serializers.Serializer):
+    detail = serializers.CharField()
