@@ -13,7 +13,6 @@ services:
            fi"
     restart: always
     volumes:
-      - static_volume:/app/staticfiles
       - media_volume:/app/media
     ports:
       - "${DJANGO_PORT}:${DJANGO_PORT}"
