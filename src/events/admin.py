@@ -21,7 +21,7 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('address', 'link')
         }),
         ('Conteúdo', {
-            'fields': ('content', 'image')
+            'fields': ('content', 'medias')
         }),
         ('Configurações', {
             'fields': ('is_participation',)
