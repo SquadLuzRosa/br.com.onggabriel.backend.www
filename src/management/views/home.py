@@ -24,6 +24,7 @@ from management.serializers import (
     ActivityCardSerializer,
     ContactSectionSerializer,
     TributeSectionSerializer,
+    HomePageSerializer,
 )
 
 
@@ -191,6 +192,7 @@ class HomePageViewSet(viewsets.ViewSet):
     ViewSet that returns all home page sections in a single response.
     """
     permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = HomePageSerializer
 
     def list(self, request):
         """

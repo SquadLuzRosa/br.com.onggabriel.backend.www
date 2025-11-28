@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
-from authentication.serializers import UserSerializer
+from authentication.serializers import LogoutSerializer, UserSerializer
 
 
 class CookieTokenObtainPairView(TokenObtainPairView):
@@ -127,6 +127,7 @@ class LogoutView(APIView):
     """
     View to handle user logout by deleting authentication and CSRF cookies.
     """
+    serializer_class = LogoutSerializer
 
     def post(self, request, *args, **kwargs):
         """
@@ -143,6 +144,7 @@ class LogoutView(APIView):
 
 class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
 
     def get(self, request):
         serializer = UserSerializer(request.user)
