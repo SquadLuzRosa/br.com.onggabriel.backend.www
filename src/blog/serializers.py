@@ -13,8 +13,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description', 'views_count']
-        read_only_fields = ['views_count']
+        fields = ['id', 'name', 'description', 'views_count', 'created_at', 'updated_at']
+        read_only_fields = ['views_count', 'created_at', 'updated_at']
 
     def validate(self, attrs):
         """
@@ -64,6 +64,8 @@ class PostSerializer(serializers.ModelSerializer):
             'category_ids',
             'views_count',
             'shares_count',
+            'created_at',
+            'updated_at',
         ]
         read_only_fields = ['slug', 'created_at', 'updated_at', 'author', 'views_count', 'shares_count']
 
