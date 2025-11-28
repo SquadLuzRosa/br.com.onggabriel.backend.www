@@ -13,7 +13,7 @@ class Address(models.Model):
     district = models.CharField(max_length=100, verbose_name='Bairro', blank=True, null=True)
     city = models.CharField(max_length=100, verbose_name='Cidade')
     state = models.CharField(max_length=100, verbose_name='Estado')
-    zipcode = models.CharField(max_length=20, verbose_name='CEP', blank=True, null=True)
+    zipcode = models.CharField(max_length=8, verbose_name='CEP', blank=True, null=True)
 
     google_maps_url = models.URLField(max_length=500, verbose_name='URL do Google Maps', blank=True, null=True)
 
