@@ -305,4 +305,7 @@ SPECTACULAR_SETTINGS = {
         'A documentação abaixo descreve todos os recursos disponíveis, os parâmetros esperados e exemplos de uso.'
     ),
     'VERSION': '1.0.0',
+    "EXTENSIONS": [
+        "authentication.extensions.CustomJWTCookieAuthScheme",
+    ]
 }
