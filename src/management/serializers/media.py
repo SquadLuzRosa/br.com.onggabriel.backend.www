@@ -11,7 +11,7 @@ class ManagementMediaSerializer(serializers.ModelSerializer):
         fields = ['id', 'file', 'media_type', 'alt_text', 'title', 'caption', 'slug']
         read_only_fields = ['slug']
 
-    def get_file(self, obj: ManagementMedia) -> str:
+    def get_file(self, obj: ManagementMedia) -> str | None:
         """Return full url"""
         if obj.file:
             request = self.context.get('request')
