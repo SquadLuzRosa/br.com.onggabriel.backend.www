@@ -8,6 +8,7 @@ from management.models import ManagementMedia
 class Address(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
 
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True, blank=True, null=True)
     street = models.CharField(max_length=200, verbose_name='Logradouro')
     number = models.CharField(max_length=20, verbose_name='Número', blank=True, null=True)
     district = models.CharField(max_length=100, verbose_name='Bairro', blank=True, null=True)
@@ -66,7 +67,6 @@ class Event(models.Model):
     event_end_time = models.TimeField(verbose_name='Hora Do Término do Evento', null=True, blank=True)
     title = models.CharField(max_length=100, verbose_name='Titulo')
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, related_name='events', verbose_name='Endereço Completo')
-    link = models.URLField(max_length=200, verbose_name='Link', null=True, blank=True)
     description = models.CharField(max_length=300, verbose_name='Descrição Curta')
     content = models.TextField(blank=True, null=True, verbose_name='Conteúdo do Evento')
     medias = models.ManyToManyField(ManagementMedia, blank=True, related_name='events', verbose_name='imagens do evento')

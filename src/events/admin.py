@@ -23,15 +23,15 @@ class EventTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ('street', 'city', 'state', 'zipcode', 'created_at')
-    list_filter = ('state', 'city', 'created_at')
-    search_fields = ('street', 'number', 'district', 'city', 'state', 'zipcode')
+    list_display = ('name', 'street', 'city', 'state', 'zipcode', 'created_at')
+    list_filter = ('name', 'state', 'city', 'created_at')
+    search_fields = ('name', 'street', 'number', 'district', 'city', 'state', 'zipcode')
     readonly_fields = ('created_at', 'updated_at')
-    ordering = ('city', 'street')
+    ordering = ('name',)
 
     fieldsets = (
         ('Endereço', {
-            'fields': ('street', 'number', 'district', 'city', 'state', 'zipcode')
+            'fields': ('name', 'street', 'number', 'district', 'city', 'state', 'zipcode')
         }),
         ('Google Maps', {
             'fields': ('google_maps_url',)
@@ -59,7 +59,7 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('event_date', 'event_end_time')
         }),
         ('Localização', {
-            'fields': ('address', 'link')
+            'fields': ('address',)
         }),
         ('Conteúdo', {
             'fields': ('content', 'medias')

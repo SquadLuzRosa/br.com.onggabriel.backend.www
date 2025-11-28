@@ -8,7 +8,7 @@ from management.serializers import ManagementMediaSerializer
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = ['id', 'street', 'number', 'district', 'city', 'state', 'zipcode', 'google_maps_url', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'street', 'number', 'district', 'city', 'state', 'zipcode', 'google_maps_url', 'created_at', 'updated_at']
         read_only_fields = ['created_at', 'updated_at']
 
 
@@ -60,7 +60,6 @@ class EventsSerializer(serializers.ModelSerializer):
             'address',
             'description',
             'content',
-            'link',
             'event_end_time',
             'is_participation',
             'created_at',
