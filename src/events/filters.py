@@ -18,10 +18,14 @@ class AddressFilter(django_filters.FilterSet):
 
 class EventFilter(django_filters.FilterSet):
     keyword = django_filters.CharFilter(method='filter_keyword')
-    type = django_filters.CharFilter(lookup_expr='icontains')
     title = django_filters.CharFilter(lookup_expr='icontains')
-    address = django_filters.CharFilter(lookup_expr='icontains')
     is_participation = django_filters.BooleanFilter()
+
+    type_id = django_filters.CharFilter(field_name='type__id', lookup_expr='iexact')
+    type_name = django_filters.CharFilter(field_name='type__name', lookup_expr='icontains')
+
+    address_id = django_filters.CharFilter(field_name='address__id', lookup_expr='iexact')
+    address_name = django_filters.CharFilter(field_name='address__name', lookup_expr='icontains')
 
     event_date__gte = django_filters.DateTimeFilter(field_name='event_date', lookup_expr='gte')
     event_date__lte = django_filters.DateTimeFilter(field_name='event_date', lookup_expr='lte')
