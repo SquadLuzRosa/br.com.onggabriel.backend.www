@@ -57,7 +57,7 @@ class EventsSerializer(serializers.ModelSerializer):
         allow_null=True
     )
 
-    medias = ManagementMediaSerializer(many=True, required=False)
+    medias = serializers.SerializerMethodField()
     media_ids = serializers.PrimaryKeyRelatedField(
         queryset=ManagementMedia.objects.all(),
         many=True,
