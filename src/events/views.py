@@ -48,12 +48,12 @@ class EventsViewSet(viewsets.ModelViewSet):
         media_id = request.data.get('media_id')
 
         if not media_id:
-            return Response({'error': 'media_id é obrigatório.'}, status=400)
+            return Response({'errors': 'media_id é obrigatório.'}, status=400)
 
         relation = EventMediaRelation.objects.filter(event=event, media_id=media_id).first()
 
         if not relation:
-            return Response({'error': 'Essa mídia não pertence ao evento.'}, status=400)
+            return Response({'errors': 'Essa mídia não pertence ao evento.'}, status=400)
 
         relation.is_cover = True
         relation.save()
