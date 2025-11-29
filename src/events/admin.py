@@ -1,5 +1,5 @@
 from django.contrib import admin
-from events.models import Address, Event, EventType
+from events.models import Address, Event, EventMediaRelation, EventType
 
 
 @admin.register(EventType)
@@ -43,13 +43,20 @@ class AddressAdmin(admin.ModelAdmin):
     )
 
 
+class EventMediaRelationInline(admin.TabularInline):
+    model = EventMediaRelation
+    extra = 1
+
+
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'type', 'event_date', 'is_participation', 'created_at')
     list_filter = ('type', 'is_participation', 'event_date', 'created_at')
-    search_fields = ('title', 'description', 'content', 'type', 'address')
+    search_fields = ('title', 'description', 'content')
     ordering = ('-event_date', 'title')
     readonly_fields = ('created_at', 'updated_at')
+
+    inlines = [EventMediaRelationInline]
 
     fieldsets = (
         ('Informações Básicas', {
@@ -62,7 +69,7 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('address',)
         }),
         ('Conteúdo', {
-            'fields': ('content', 'medias')
+            'fields': ('content',)
         }),
         ('Configurações', {
             'fields': ('is_participation',)
