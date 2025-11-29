@@ -69,7 +69,7 @@ class Event(models.Model):
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, related_name='events', verbose_name='Endereço Completo')
     description = models.CharField(max_length=300, verbose_name='Descrição Curta')
     content = models.TextField(blank=True, null=True, verbose_name='Conteúdo do Evento')
-    medias = models.ManyToManyField(ManagementMedia, blank=True, related_name='events', verbose_name='imagens do evento')
+    medias = models.ManyToManyField(ManagementMedia, blank=True, related_name='events', verbose_name='imagens do evento', through='EventMediaRelation')
     is_participation = models.BooleanField(verbose_name='é obrigatório participação?', default=False)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
@@ -82,3 +82,31 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class EventMediaRelation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='media_links', verbose_name='Evento')
+    media = models.ForeignKey(ManagementMedia, on_delete=models.CASCADE, related_name='event_links', verbose_name='Mídia')
+    is_cover = models.BooleanField(default=False, verbose_name='Imagem principal')
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de atualização')
+
+    class Meta:
+        verbose_name = 'Mídia de Evento'
+        verbose_name_plural = 'Mídias de Eventos'
+        unique_together = [('event', 'media')]
+
+    def save(self, *args, **kwargs):
+        if self.is_cover:
+            EventMediaRelation.objects.filter(
+                event=self.event,
+                is_cover=True
+            ).exclude(pk=self.pk).update(is_cover=False)
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.id)
