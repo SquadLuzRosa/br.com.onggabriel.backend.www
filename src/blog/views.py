@@ -73,7 +73,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     def increment_share(self, request, pk=None):
         """
         Custom action to increment share count.
-        POST /api/v1/post/{id}/increment-share/
+        POST /api/v1/post/{slug}/increment-share/
         """
         post = self.get_object()
         Post.objects.filter(pk=post.pk).update(shares_count=F('shares_count') + 1)
