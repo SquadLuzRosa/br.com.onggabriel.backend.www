@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from events.models import Address, Event, EventType
+from events.models import Address, Event, EventMediaRelation, EventType
 from management.models import ManagementMedia
 from management.serializers import ManagementMediaSerializer
 
@@ -66,6 +66,14 @@ class EventsSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    cover_media = serializers.SerializerMethodField()
+
+    def get_cover_media(self, obj):
+        cover = obj.media_links.filter(is_cover=True).first()
+        if not cover:
+            return None
+        return ManagementMediaSerializer(cover.media).data
+
     class Meta:
         model = Event
         fields = [
@@ -82,6 +90,7 @@ class EventsSerializer(serializers.ModelSerializer):
             'is_participation',
             'created_at',
             'updated_at',
+            'cover_media',
             'medias',
             'media_ids'
         ]
@@ -91,9 +100,16 @@ class EventsSerializer(serializers.ModelSerializer):
         nested_medias = validated_data.pop('medias', [])
         instance = super().create(validated_data)
 
+        first = True
+
         for media_data in nested_medias:
             media = ManagementMedia.objects.create(**media_data)
-            instance.medias.add(media)
+            EventMediaRelation.objects.create(
+                event=instance,
+                media=media,
+                is_cover=first
+            )
+            first = False
 
         return instance
 
@@ -102,9 +118,16 @@ class EventsSerializer(serializers.ModelSerializer):
         instance = super().update(instance, validated_data)
 
         if nested_medias is not None:
-            instance.medias.clear()
+            EventMediaRelation.objects.filter(event=instance).delete()
+
+            first = True
             for media_data in nested_medias:
                 media = ManagementMedia.objects.create(**media_data)
-                instance.medias.add(media)
+                EventMediaRelation.objects.create(
+                    event=instance,
+                    media=media,
+                    is_cover=first
+                )
+                first = False
 
         return instance
