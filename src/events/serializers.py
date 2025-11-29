@@ -74,6 +74,11 @@ class EventsSerializer(serializers.ModelSerializer):
             return None
         return ManagementMediaSerializer(cover.media).data
 
+    def get_medias(self, obj):
+        medias = obj.media_links.filter(is_cover=False).values_list('media', flat=True)
+        queryset = ManagementMedia.objects.filter(pk__in=medias)
+        return ManagementMediaSerializer(queryset, many=True).data
+
     class Meta:
         model = Event
         fields = [
