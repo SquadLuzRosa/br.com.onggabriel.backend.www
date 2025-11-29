@@ -22,6 +22,9 @@ class PostModelViewSet(viewsets.ModelViewSet):
     ordering = ('-created_at',)
     pagination_class = LimitOffsetPagination
 
+    lookup_field = 'slug'
+    lookup_value_regex = '.+'
+
     def perform_create(self, serializer):
         """
         Override perform_create to set the author to the current user.
