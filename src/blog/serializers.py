@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from authentication.models import CustomUser
 from blog.models import Category, Post
+from management.models import ManagementMedia
+from management.serializers import ManagementMediaSerializer
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -49,6 +51,15 @@ class PostSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    media = ManagementMediaSerializer(required=False, allow_null=True)
+    media_id = serializers.PrimaryKeyRelatedField(
+        queryset=ManagementMedia.objects.all(),
+        source='media',
+        write_only=True,
+        required=False,
+        allow_null=True
+    )
+
     class Meta:
         model = Post
         fields = [
@@ -59,7 +70,8 @@ class PostSerializer(serializers.ModelSerializer):
             'author',
             'created_at',
             'updated_at',
-            'cover_image',
+            'media',
+            'media_id',
             'categories',
             'category_ids',
             'views_count',
@@ -69,34 +81,37 @@ class PostSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['slug', 'created_at', 'updated_at', 'author', 'views_count', 'shares_count']
 
-    def validate(self, attrs):
-        request = self.context.get('request')
-        author = request.user if request and request.user.is_authenticated else None
-
-        if author and Post.objects.filter(author=author, title=attrs.get('title')).exists():
-            raise serializers.ValidationError({
-                'errors': 'Você já possui um post com este título.'
-            })
-
-        return attrs
-
     def create(self, validated_data):
-        """
-        Override create to handle ManyToMany relationship for categories.
-        """
         categories = validated_data.pop('categories', [])
+
+        media_data = validated_data.pop('media', None)
+
+        if media_data:
+            media = ManagementMedia.objects.create(**media_data)
+            validated_data['media'] = media
+
         post = Post.objects.create(**validated_data)
         post.categories.set(categories)
+
         return post
 
     def update(self, instance, validated_data):
-        """
-        Override update to handle ManyToMany relationship for categories.
-        """
         categories = validated_data.pop('categories', None)
+
+        media_data = validated_data.pop('media', None)
+
+        if media_data:
+            if instance.media:
+                for attr, value in media_data.items():
+                    setattr(instance.media, attr, value)
+                instance.media.save()
+            else:
+                media = ManagementMedia.objects.create(**media_data)
+                validated_data['media'] = media
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+
         instance.save()
 
         if categories is not None:
