@@ -83,6 +83,26 @@ class PostModelViewSet(viewsets.ModelViewSet):
             'message': 'Share count incremented successfully'
         }, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['get'], url_path='related')
+    def related(self, request, slug=None):
+        """
+        Returns up to 6 related posts: 3 most viewed and 3 most recent.
+        Excludes the current post (by slug).
+        GET /api/v1/post/{slug}/related/
+        """
+        current_post = self.get_object()
+
+        most_viewed = Post.objects.exclude(pk=current_post.pk).order_by('-views_count')[:3]
+        most_recent = Post.objects.exclude(pk=current_post.pk).order_by('-created_at')[:3]
+
+        most_viewed_serializer = self.get_serializer(most_viewed, many=True)
+        most_recent_serializer = self.get_serializer(most_recent, many=True)
+
+        return Response({
+            'most_viewed': most_viewed_serializer.data,
+            'most_recent': most_recent_serializer.data
+        }, status=status.HTTP_200_OK)
+
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
