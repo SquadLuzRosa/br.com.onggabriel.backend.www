@@ -52,7 +52,7 @@ class EventFilter(django_filters.FilterSet):
             Q(title__icontains=value) |
             Q(description__icontains=value) |
             Q(content__icontains=value) |
-            Q(type__icontains=value)
+            Q(type__name__icontains=value)
         )
 
     def filter_is_virtual(self, queryset, _name, value):
