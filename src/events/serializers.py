@@ -125,6 +125,7 @@ class EventsSerializer(serializers.ModelSerializer):
             'content',
             'event_end_time',
             'is_participation',
+            'online_url',
             'created_at',
             'updated_at',
             'cover_media',
