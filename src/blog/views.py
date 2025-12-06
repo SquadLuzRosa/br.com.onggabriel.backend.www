@@ -23,7 +23,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     lookup_field = 'slug'
-    lookup_value_regex = '[^/]+'
+    lookup_value_regex = '[^/]+/[^/]+'
 
     def perform_create(self, serializer):
         """
