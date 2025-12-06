@@ -20,6 +20,7 @@ class EventFilter(django_filters.FilterSet):
     keyword = django_filters.CharFilter(method='filter_keyword')
     title = django_filters.CharFilter(lookup_expr='icontains')
     is_participation = django_filters.BooleanFilter()
+    is_virtual = django_filters.BooleanFilter(method='filter_is_virtual')
 
     type_id = django_filters.CharFilter(field_name='type__id', lookup_expr='iexact')
     type_name = django_filters.CharFilter(field_name='type__name', lookup_expr='icontains')
@@ -40,6 +41,7 @@ class EventFilter(django_filters.FilterSet):
             'title',
             'address',
             'is_participation',
+            'is_virtual',
         ]
 
     def filter_keyword(self, queryset, _name, value):
@@ -52,3 +54,16 @@ class EventFilter(django_filters.FilterSet):
             Q(content__icontains=value) |
             Q(type__icontains=value)
         )
+
+    def filter_is_virtual(self, queryset, _name, value):
+        """
+        Filter events by virtual status.
+        If True, return events with online_url not null/empty.
+        If False, return events with address not null.
+        """
+        if value:
+            return queryset.filter(
+                ~Q(online_url__isnull=True) & ~Q(online_url='')
+            )
+        else:
+            return queryset.filter(address__isnull=False)
