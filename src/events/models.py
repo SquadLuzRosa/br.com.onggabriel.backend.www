@@ -70,6 +70,7 @@ class Event(models.Model):
     description = models.CharField(max_length=300, verbose_name='Descrição Curta')
     content = models.TextField(blank=True, null=True, verbose_name='Conteúdo do Evento')
     medias = models.ManyToManyField(ManagementMedia, blank=True, related_name='events', verbose_name='imagens do evento', through='EventMediaRelation')
+    online_url = models.URLField(max_length=500, blank=True, null=True, verbose_name='URL do Evento Online')
     is_participation = models.BooleanField(verbose_name='é obrigatório participação?', default=False)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')
