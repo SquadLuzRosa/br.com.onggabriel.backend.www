@@ -69,7 +69,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
 
         return response
 
-    @action(detail=True, methods=['post'], url_path='increment-share')
+    @action(detail=True, methods=['post'], url_path='increment-share', permission_classes=[])
     def increment_share(self, request, slug=None):
         """
         Custom action to increment share count.
