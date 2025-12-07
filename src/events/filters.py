@@ -11,9 +11,23 @@ class EventTypeFilter(django_filters.FilterSet):
 
 
 class AddressFilter(django_filters.FilterSet):
+    keyword = django_filters.CharFilter(method='filter_keyword')
+
     class Meta:
         model = Address
-        fields = ['id', 'street', 'street', 'district', 'created_at', 'updated_at', 'city', 'state', 'zipcode']
+        fields = ['id', 'name', 'street', 'district', 'created_at', 'updated_at', 'city', 'state', 'zipcode']
+
+    def filter_keyword(self, queryset, _name, value):
+        """
+        Filter addresses by keyword in name, street, district, city or state.
+        """
+        return queryset.filter(
+            Q(name__icontains=value) |
+            Q(street__icontains=value) |
+            Q(district__icontains=value) |
+            Q(city__icontains=value) |
+            Q(state__icontains=value)
+        )
 
 
 class EventFilter(django_filters.FilterSet):
