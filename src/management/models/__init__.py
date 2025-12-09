@@ -1,3 +1,10 @@
+from .about import (
+    AboutCarouselSection,
+    AboutIdealizersSection,
+    AboutHistorySection,
+    AboutMissionSection,
+    AboutValueCards,
+)
 from .home import (
     ActivityCard,
     ContactSection,
@@ -12,6 +19,11 @@ from .home import (
 from .media import ManagementMedia
 
 __all__ = [
+    'AboutCarouselSection',
+    'AboutIdealizersSection',
+    'AboutHistorySection',
+    'AboutMissionSection',
+    'AboutValueCards',
     'ActivityCard',
     'ContactSection',
     'DepoimentCard',
