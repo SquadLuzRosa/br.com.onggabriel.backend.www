@@ -75,7 +75,6 @@ class AboutValueCardsSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'card_number',
-            'stats_number',
             'text',
             'created_at',
             'updated_at',

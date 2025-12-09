@@ -68,7 +68,6 @@ class AboutValueCards(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True, verbose_name='ID')
 
     card_number = models.PositiveSmallIntegerField(choices=CARD_CHOICES, unique=True)
-    stats_number = models.PositiveIntegerField()
     text = models.CharField(max_length=100)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação')

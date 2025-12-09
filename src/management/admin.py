@@ -295,7 +295,7 @@ class AboutMissionSectionAdmin(admin.ModelAdmin):
 
 @admin.register(AboutValueCards)
 class AboutValueCardsAdmin(admin.ModelAdmin):
-    list_display = ('card_number', 'stats_number', 'text', 'created_at')
+    list_display = ('card_number', 'text', 'created_at')
     list_filter = ('card_number', 'created_at')
     search_fields = ('text',)
     readonly_fields = ('created_at', 'updated_at')
@@ -303,7 +303,7 @@ class AboutValueCardsAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Configuração do Card', {
-            'fields': ('card_number', 'stats_number', 'text')
+            'fields': ('card_number', 'text')
         }),
         ('Metadados', {
             'fields': ('created_at', 'updated_at'),
