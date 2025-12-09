@@ -65,6 +65,56 @@ class EventMediaRelationSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at']
 
 
+class EventMediaRelationWriteSerializer(serializers.ModelSerializer):
+    media_id = serializers.PrimaryKeyRelatedField(
+        queryset=ManagementMedia.objects.all(),
+        source='media',
+        write_only=True,
+    )
+    media = ManagementMediaSerializer(read_only=True)
+
+    class Meta:
+        model = EventMediaRelation
+        fields = ['id', 'media', 'media_id', 'is_cover', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        event = self.context.get('event')
+        validated_data['event'] = event
+        return super().create(validated_data)
+
+
+class EventMediaUploadSerializer(serializers.Serializer):
+    file = serializers.FileField()
+    media_type = serializers.ChoiceField(
+        choices=ManagementMedia.MEDIA_TYPES, default='image'
+    )
+    alt_text = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    title = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    caption = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    is_cover = serializers.BooleanField(default=False, required=False)
+
+    def create(self, validated_data):
+        event = self.context.get('event')
+        is_cover = validated_data.pop('is_cover', False)
+
+        management_media = ManagementMedia.objects.create(
+            file=validated_data.get('file'),
+            media_type=validated_data.get('media_type', 'image'),
+            alt_text=validated_data.get('alt_text', ''),
+            title=validated_data.get('title', ''),
+            caption=validated_data.get('caption', ''),
+        )
+
+        relation = EventMediaRelation.objects.create(
+            event=event,
+            media=management_media,
+            is_cover=is_cover,
+        )
+
+        return relation
+
+
 class EventMediaWriteSerializer(serializers.Serializer):
     """Serializer para criar mídia nested no evento"""
 
