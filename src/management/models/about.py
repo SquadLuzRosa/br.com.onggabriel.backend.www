@@ -33,6 +33,7 @@ class AboutHistorySection(models.Model):
 class AboutMissionSection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
+    main_text = models.CharField(max_length=255)
     text_1 = models.TextField()
     text_2 = models.TextField()
     media = models.ForeignKey(ManagementMedia, on_delete=models.SET_NULL, null=True)
