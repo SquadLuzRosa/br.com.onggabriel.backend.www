@@ -276,12 +276,12 @@ class AboutHistorySectionAdmin(admin.ModelAdmin):
 @admin.register(AboutMissionSection)
 class AboutMissionSectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'created_at')
-    search_fields = ('text_1', 'text_2')
+    search_fields = ('main_text', 'text_1', 'text_2')
     readonly_fields = ('created_at', 'updated_at')
 
     fieldsets = (
         ('Conteúdo', {
-            'fields': ('text_1', 'text_2', 'media')
+            'fields': ('main_text', 'text_1', 'text_2', 'media')
         }),
         ('Metadados', {
             'fields': ('created_at', 'updated_at'),

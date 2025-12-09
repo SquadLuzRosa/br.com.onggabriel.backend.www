@@ -59,6 +59,7 @@ class AboutMissionSectionSerializer(serializers.ModelSerializer):
         model = AboutMissionSection
         fields = [
             'id',
+            'main_text',
             'text_1',
             'text_2',
             'media',
