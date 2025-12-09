@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from management.models import (
+    # Home
     ActivityCard,
     ContactSection,
     DepoimentCard,
@@ -11,6 +12,12 @@ from management.models import (
     StatsCard,
     TributeSection,
     VolunteerSection,
+    # About
+    AboutHistorySection,
+    AboutMissionSection,
+    AboutValueCards,
+    AboutIdealizersSection,
+    AboutCarouselSection,
 )
 
 
@@ -237,3 +244,116 @@ class ActivityCardAdmin(admin.ModelAdmin):
         if ActivityCard.objects.count() >= ActivityCard.MODELS_LEN:
             return False
         return super().has_add_permission(request)
+
+
+# =====================
+# ABOUT PAGE ADMIN
+# =====================
+
+@admin.register(AboutHistorySection)
+class AboutHistorySectionAdmin(admin.ModelAdmin):
+    list_display = ('main_text', 'created_at')
+    search_fields = ('main_text', 'description')
+    readonly_fields = ('created_at', 'updated_at')
+
+    fieldsets = (
+        ('Conteúdo', {
+            'fields': ('main_text', 'description')
+        }),
+        ('Mídias', {
+            'fields': ('card_media', 'background_image')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return not AboutHistorySection.objects.exists()
+
+
+@admin.register(AboutMissionSection)
+class AboutMissionSectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'created_at')
+    search_fields = ('text_1', 'text_2')
+    readonly_fields = ('created_at', 'updated_at')
+
+    fieldsets = (
+        ('Conteúdo', {
+            'fields': ('text_1', 'text_2', 'media')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return not AboutMissionSection.objects.exists()
+
+
+@admin.register(AboutValueCards)
+class AboutValueCardsAdmin(admin.ModelAdmin):
+    list_display = ('card_number', 'stats_number', 'text', 'created_at')
+    list_filter = ('card_number', 'created_at')
+    search_fields = ('text',)
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('card_number',)
+
+    fieldsets = (
+        ('Configuração do Card', {
+            'fields': ('card_number', 'stats_number', 'text')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return AboutValueCards.objects.count() < AboutValueCards.MODELS_LEN
+
+
+@admin.register(AboutIdealizersSection)
+class AboutIdealizersSectionAdmin(admin.ModelAdmin):
+    list_display = ('main_text', 'idealizers', 'created_at')
+    search_fields = ('main_text', 'idealizers', 'descrption')
+    readonly_fields = ('created_at', 'updated_at')
+
+    fieldsets = (
+        ('Conteúdo', {
+            'fields': ('main_text', 'idealizers', 'descrption', 'media')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return not AboutIdealizersSection.objects.exists()
+
+
+@admin.register(AboutCarouselSection)
+class AboutCarouselSectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'get_medias_count', 'created_at')
+    readonly_fields = ('created_at', 'updated_at')
+    filter_horizontal = ('medias',)
+
+    fieldsets = (
+        ('Mídias do Carrossel', {
+            'fields': ('medias',)
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    @admin.display(description='Quantidade de Mídias')
+    def get_medias_count(self, obj):
+        return obj.medias.count()
+
+    def has_add_permission(self, request):
+        return not AboutCarouselSection.objects.exists()
