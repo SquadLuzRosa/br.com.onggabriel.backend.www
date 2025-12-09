@@ -12,9 +12,17 @@ from management.views import (
     ContactSectionViewSet,
     TributeSectionViewSet,
     HomePageViewSet,
+    AboutHistorySectionViewSet,
+    AboutMissionSectionViewSet,
+    AboutValueCardsViewSet,
+    AboutIdealizersSectionViewSet,
+    AboutCarouselSectionViewSet,
+    AboutPageViewSet,
 )
 
 router = DefaultRouter()
+
+# Home page routes
 router.register(r'cms/home/presentation', PresentationSectionViewSet, basename='presentation-section')
 router.register(r'cms/home/mission', MissionSectionViewSet, basename='mission-section')
 router.register(r'cms/home/donate', DonateSectionViewSet, basename='donate-section')
@@ -25,6 +33,14 @@ router.register(r'cms/home/activities', ActivityCardViewSet, basename='activity-
 router.register(r'cms/home/contact', ContactSectionViewSet, basename='contact-section')
 router.register(r'cms/home/tribute', TributeSectionViewSet, basename='tribute-section')
 router.register(r'cms/home', HomePageViewSet, basename='home-page')
+
+# About page routes
+router.register(r'cms/about/history', AboutHistorySectionViewSet, basename='about-history-section')
+router.register(r'cms/about/mission', AboutMissionSectionViewSet, basename='about-mission-section')
+router.register(r'cms/about/values', AboutValueCardsViewSet, basename='about-value-cards')
+router.register(r'cms/about/idealizers', AboutIdealizersSectionViewSet, basename='about-idealizers-section')
+router.register(r'cms/about/carousel', AboutCarouselSectionViewSet, basename='about-carousel-section')
+router.register(r'cms/about', AboutPageViewSet, basename='about-page')
 
 urlpatterns = [
     path('', include(router.urls))
