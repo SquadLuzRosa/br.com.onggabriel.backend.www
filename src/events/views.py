@@ -108,7 +108,7 @@ class EventsViewSet(viewsets.ModelViewSet):
         output_serializer = EventMediaRelationSerializer(relation, context={'request': request})
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['patch'], url_path=r'medias/(?P<relation_id>[^/.]+)')
+    @action(detail=True, methods=['patch'], url_path=r'medias/(?P<relation_id>[0-9a-f-]{36})')
     def update_media(self, request, pk=None, relation_id=None):
         event = self.get_object()
         relation = EventMediaRelation.objects.filter(event=event, id=relation_id).first()
@@ -127,7 +127,7 @@ class EventsViewSet(viewsets.ModelViewSet):
         output_serializer = EventMediaRelationSerializer(relation, context={'request': request})
         return Response(output_serializer.data)
 
-    @action(detail=True, methods=['delete'], url_path=r'medias/(?P<relation_id>[^/.]+)/remove')
+    @action(detail=True, methods=['delete'], url_path=r'medias/(?P<relation_id>[0-9a-f-]{36})/remove')
     def remove_media(self, request, pk=None, relation_id=None):
         """Remove uma mídia do evento (apenas a relação, não deleta a mídia)"""
         event = self.get_object()
