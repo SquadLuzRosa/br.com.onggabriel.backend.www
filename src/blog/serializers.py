@@ -118,3 +118,22 @@ class PostSerializer(serializers.ModelSerializer):
             instance.categories.set(categories)
 
         return instance
+
+    def validate(self, attrs):
+        """
+        Validate that the title is unique for the current author.
+        """
+        title = attrs.get('title')
+        author = self.context.get('request', {}).user if self.context.get('request') else None
+        instance = self.instance
+
+        if title and author:
+            queryset = Post.objects.filter(author=author, title=title)
+            if instance:
+                queryset = queryset.exclude(pk=instance.pk)
+            if queryset.exists():
+                raise serializers.ValidationError({
+                    'errors': 'Você já possui um post com este título.'
+                })
+
+        return attrs
