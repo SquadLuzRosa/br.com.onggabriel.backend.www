@@ -117,7 +117,7 @@ Contribuidores e mantenedores listados no repositório GitHub.
       <td align="center">
         <img src="https://avatars.githubusercontent.com/u/125938287?v=4&size=64" width="100" ><br>
         <a href="https://github.com/kaironn2" ><b>Jonathas Oliveira</b></a><br>
-        <i>BackEnd</i>
+        <i>Full-Stack</i>
       </td>
       <td align="center">
         <img src="https://avatars.githubusercontent.com/u/108550945?v=4" width="100" ><br>
