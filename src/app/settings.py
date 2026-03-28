@@ -2,7 +2,6 @@ from datetime import timedelta
 from pathlib import Path
 
 from decouple import config
-import dj_database_url
 
 from utils.env_utils import EnvUtils
 
@@ -125,7 +124,14 @@ if DJANGO_ENV == 'development':
     }
 else:
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600)
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('POSTGRES_DB'),
+            'USER': config('POSTGRES_USER'),
+            'PASSWORD': config('POSTGRES_PASSWORD'),
+            'HOST': config('POSTGRES_HOST', 'db'),
+            'PORT': config('POSTGRES_PORT', '5432'),
+        }
     }
 
 
