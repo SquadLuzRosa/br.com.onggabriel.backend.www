@@ -1,24 +1,54 @@
 services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-onggabriel}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:-onggabriel}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-onggabriel} -d ${POSTGRES_DB:-onggabriel}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  migrate:
+    build: .
+    env_file:
+      - .env
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uv run src/manage.py migrate --noinput
+
   web_api:
     build: .
     env_file:
       - .env
     command: >
-      sh -c "uv run src/manage.py migrate --noinput &&
-           if [ \"$DJANGO_ENV\" = 'production' ]; then
+      sh -c "if [ \"$DJANGO_ENV\" = 'production' ]; then
              uv run src/manage.py collectstatic --noinput &&
-             uv run gunicorn app.wsgi:application --bind 0.0.0.0:${DJANGO_PORT} --chdir src --workers 4 --timeout 120;
+             uv run gunicorn app.wsgi:application --bind 0.0.0.0:8000 --chdir src --timeout 120;
            else
-             uv run src/manage.py runserver 0.0.0.0:${DJANGO_PORT};
+             uv run src/manage.py runserver 0.0.0.0:8000;
            fi"
     restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     volumes:
       - media_volume:/app/media
+      - static_volume:/app/src/staticfiles
     ports:
-      - "${DJANGO_PORT}:${DJANGO_PORT}"
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - "8000:8000"
 
 volumes:
+  postgres_data:
   static_volume:
   media_volume:
